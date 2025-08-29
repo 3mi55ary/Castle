@@ -44,7 +44,10 @@ xfconf-query -c xfce4-screenshooter \
 # netexec
 # bloodhound
 # impacket
+# responder
 # enum4linux
+# ldapdomaindump
+# ldapsearch
 # Kerbrute
 cd ~/WindowsTools
 sudo git clone https://github.com/ropnop/kerbrute.git
