@@ -41,25 +41,30 @@ function Get-ToolGit($name, $gitURL, $destination) {
     }
 }
 
-# Function to Download a Binary
-function Get-ToolBinary($name, $url, $destination) {
+# Function to Download a File
+function Get-ToolFile($name, $url, $destination) {
     $fullPath = Join-Path $ToolkitRoot $destination
     if (-Not (Test-Path $fullPath)) {
         Write-Host "[+] Downloading $name..."
-        New-Item -ItemType Directory -Path $fullPath -Force | Out-Null
-        $zipPath = Join-Path $fullPath "$name.zip"
-        Invoke-WebRequest -Uri $url -OutFile $zipPath -UseBasicParsing
-        Expand-Archive -Path $zipPath -DestinationPath $fullPath -Force
+        Invoke-WebRequest -Uri $url -OutFile $fullPath
     } else {
         Write-Host "[-] $name already exists. Skipping..."
     }
 }
 
+# Run a Desired EXE
+function Run-EXE($exe, $args) {
+    if (-not (Test-Path $exe)) {
+        Write-Host "[!] Executable not found: $exe" -ForegroundColor Red
+        return
+    }
+    Write-Host "[+] Running: $exe $args" -ForegroundColor Green
+    & $exe @args
+}
 
 #===============================================================================
 # Tool Installation ============================================================
 #===============================================================================
-
 # Inveigh
 Get-ToolGit -name "Inveigh" -gitURL "https://github.com/Kevin-Robertson/Inveigh.git" -destination "Inveigh"
 
@@ -75,11 +80,12 @@ Get-ToolGit -name "PowerSploit" -gitURL "https://github.com/PowerShellMafia/Powe
 # Snaffler
 Get-ToolGit -name "Snaffler" -gitURL "https://github.com/SnaffCon/Snaffler.git" -destination "Snaffler"
 
-# Install WSL for BloodhoundCE
-# Get-ToolBinary -name "WSL" -URL "https://github.com/microsoft/WSL/releases/download/2.5.10/wsl.2.5.10.0.arm64.msi" -destination "WSL"
+# Docker Desktop
+Get-ToolFile -name "Docker Desktop" -URL "https://desktop.docker.com/win/main/amd64/Docker Desktop Installer.exe" -destination "DockerDesktop"
+Run-EXE "$env:USERPROFILE\OffensiveTools\DockerDesktop\Docker Desktop Installer.exe"
 
 # BloodhoundCE
-# Get-ToolBinary -name "BloodHoundCE" -URL "https://github.com/SpecterOps/bloodhound-cli/releases/latest/download/bloodhound-cli-windows-amd64.zip" -destination "BloodHoundCE"
+# Get-ToolFile -name "BloodHoundCE" -URL "https://github.com/SpecterOps/bloodhound-cli/releases/latest/download/bloodhound-cli-windows-amd64.zip" -destination "BloodHoundCE"
 
 # Bloodhound
 # Get-ToolGit -name "" -gitURL "" -destination ""
