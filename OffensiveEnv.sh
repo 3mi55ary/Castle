@@ -43,14 +43,18 @@ xfconf-query -c xfce4-screenshooter \
 #===============================================================================
 # WINDOWS TOOLING ==============================================================
 #===============================================================================
+# WADcoms link
 # netexec
 # bloodhound
 # impacket
+#   psexec.py
 # responder
 # enum4linux
 # ldapdomaindump
 # ldapsearch
 # Kerbrute
+# smbmap
+# windapsearch
 cd ~/WindowsTools
 sudo git clone https://github.com/ropnop/kerbrute.git
 cd kerbrute
