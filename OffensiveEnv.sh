@@ -55,6 +55,7 @@ xfconf-query -c xfce4-screenshooter \
 # Kerbrute
 # smbmap
 # windapsearch
+# shortscan - IIS Scanner
 cd ~/WindowsTools
 sudo git clone https://github.com/ropnop/kerbrute.git
 cd kerbrute
