@@ -73,6 +73,9 @@ mkdir ~/WindowsTools/responder
 git clone https://github.com/lgandx/Responder.git ~/WindowsTools/responder
 
 # Bloody AD
+# certipy-ad
+# evil-winrm
+# evil-winrm-py
 # enum4linux
 # ldapdomaindump
 # ldapsearch
