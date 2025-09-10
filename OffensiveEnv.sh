@@ -36,14 +36,12 @@ fi
 #===============================================================================
 # Screenshots / Captures =======================================================
 #===============================================================================
-# Install and Configure Termshot
-
-# Install and Configure Flameshot for Instant Usage (BACKUP)
+# Install and Configure Flameshot for Instant Usage
 sudo apt install -y flameshot
 flameshot &
 flameshot gui --path "$HOME/Captures" --accept-on-select &
 
-# Set XFCE's default screenshot save path (BACKUP BACKUP)
+# Set XFCE's default screenshot save path (BACKUP)
 xfconf-query -c xfce4-screenshooter \
     -p /last-save-location \
     -s "$HOME/Captures"
