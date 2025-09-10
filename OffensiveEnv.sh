@@ -74,6 +74,7 @@ git clone https://github.com/dirkjanm/krbrelayx.git ~/WindowsTools/impacket
 mkdir ~/WindowsTools/responder
 git clone https://github.com/lgandx/Responder.git ~/WindowsTools/responder
 
+# Bloody AD
 # enum4linux
 # ldapdomaindump
 # ldapsearch
