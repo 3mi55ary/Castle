@@ -20,8 +20,7 @@ sudo apt update
 mkdir -p ~/Captures ~/WindowsTools ~/PivotingTools ~/Loot
 
 # PimpMyKali Addition
-cd ~
-git clone https://github.com/Dewalt-arch/pimpmykali
+git clone https://github.com/Dewalt-arch/pimpmykali ~/
 
 # Ensure Python3 + pipx are Installed
 if ! command -v python3 &>/dev/null; then
