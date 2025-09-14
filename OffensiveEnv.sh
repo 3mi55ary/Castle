@@ -95,6 +95,10 @@ sudo git clone https://github.com/ropnop/kerbrute.git ~/WindowsTools/kerbrute
 sudo make -C ~/WindowsTools/kerbrute all
 sudo ln -s ~/WindowsTools/kerbrute/dist/kerbrute_linux_amd64 /usr/local/bin/kerbrute
 
+# ADRecon
+mkdir ~/WindowsTools/adrecon
+git clone https://github.com/sense-of-security/ADRecon.git
+
 #===============================================================================
 # PIVOTING TOOLING =============================================================
 #===============================================================================
