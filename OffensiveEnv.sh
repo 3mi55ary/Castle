@@ -89,7 +89,7 @@ git clone https://github.com/dirkjanm/ldapdomaindump.git
 # https://github.com/ShutdownRepo/targetedKerberoast
 # https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS14-068/pykek
 
-# Kerbrute
+# Kerbrute (sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt | Create users list from ldapdomaindump | Hashcat mode 18200)
 mkdir ~/WindowsTools/kerbrute
 sudo git clone https://github.com/ropnop/kerbrute.git ~/WindowsTools/kerbrute
 sudo make -C ~/WindowsTools/kerbrute all
