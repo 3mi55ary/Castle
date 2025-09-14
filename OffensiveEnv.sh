@@ -77,7 +77,11 @@ git clone https://github.com/lgandx/Responder.git ~/WindowsTools/responder
 # evil-winrm
 # evil-winrm-py
 # enum4linux
-# ldapdomaindump
+
+# ldapdomaindump (sudo python3 ldapdomaindump.py ldap://DC -u 'DOMAIN\user' -p 'Password')
+mkdir ~/WindowsTools/ldapdomaindump
+git clone https://github.com/dirkjanm/ldapdomaindump.git
+
 # ldapsearch
 # smbmap
 # windapsearch
