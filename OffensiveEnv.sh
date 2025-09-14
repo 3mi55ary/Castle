@@ -17,7 +17,7 @@
 sudo apt update
 
 # Create Staging Areas
-mkdir -p ~/Captures ~/WindowsTools ~/PivotingTools ~/Loot
+mkdir -p ~/Captures ~/WindowsTools ~/PivotingTools ~/Monitoring ~/Loot
 
 # PimpMyKali Addition
 git clone https://github.com/Dewalt-arch/pimpmykali ~/
@@ -80,7 +80,7 @@ git clone https://github.com/lgandx/Responder.git ~/WindowsTools/responder
 
 # ldapdomaindump (sudo python3 ldapdomaindump.py ldap://DC -u 'DOMAIN\user' -p 'Password')
 mkdir ~/WindowsTools/ldapdomaindump
-git clone https://github.com/dirkjanm/ldapdomaindump.git
+git clone https://github.com/dirkjanm/ldapdomaindump.git ~/WindowsTools/ldapdomaindump
 
 # ldapsearch
 # smbmap
@@ -97,7 +97,7 @@ sudo ln -s ~/WindowsTools/kerbrute/dist/kerbrute_linux_amd64 /usr/local/bin/kerb
 
 # ADRecon
 mkdir ~/WindowsTools/adrecon
-git clone https://github.com/sense-of-security/ADRecon.git
+git clone https://github.com/sense-of-security/ADRecon.git ~/WindowsTools/adrecon
 
 #===============================================================================
 # PIVOTING TOOLING =============================================================
@@ -108,6 +108,15 @@ wget -P ~/PivotingTools/Ligolo https://github.com/nicocha30/ligolo-ng/releases/d
 tar -xvzf ~/PivotingTools/Ligolo/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz -C ~/PivotingTools/Ligolo
 
 #chisel
+
+#===============================================================================
+# System Monitoring ============================================================
+#===============================================================================
+# DUF
+mkdir ~/Monitoring/duf
+git clone https://github.com/muesli/duf.git ~/Monitoring/duf
+go build -C ~/Monitoring/duf
+
 
 #===============================================================================
 # CUSTOMIZING ==================================================================
