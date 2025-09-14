@@ -83,6 +83,7 @@ git clone https://github.com/lgandx/Responder.git ~/WindowsTools/responder
 # windapsearch
 # shortscan - IIS Scanner + ds_walk
 # https://github.com/ShutdownRepo/targetedKerberoast
+# https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS14-068/pykek
 
 # Kerbrute
 mkdir ~/WindowsTools/kerbrute
