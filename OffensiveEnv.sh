@@ -20,20 +20,9 @@ mkdir -p ~/Captures ~/WindowsTools ~/PivotingTools ~/Monitoring ~/Loot
 
 # Install UV
 export PATH="$HOME/.local/bin:$PATH"
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 if ! command -v uv &>/dev/null; then
     curl -LsSf https://astral.sh/uv/install.sh | sh
-fi
-
-# Ensure Python3 + pipx are Installed
-if ! command -v python3 &>/dev/null; then
-    echo "[*] Installing Python3..."
-    sudo apt install -y python3 python3-pip
-fi
-
-if ! command -v pipx &>/dev/null; then
-    echo "[*] Installing pipx..."
-    sudo apt install -y pipx
-    pipx ensurepath
 fi
 
 #===============================================================================
@@ -52,11 +41,23 @@ xfconf-query -c xfce4-screenshooter \
 #===============================================================================
 # WINDOWS TOOLING ==============================================================
 #===============================================================================
-# WADcoms link
+# https://wadcoms.github.io/
 # NetExec
 uv tool install git+https://github.com/Pennyw0rth/NetExec.git
 
 # BloodHound-CE
+if ! command -v docker &>/dev/null; then
+    sudo apt install -y docker.io docker-compose-plugin
+    sudo systemctl enable --now docker
+fi
+if [ ! -d "$HOME/WindowsTools/bloodhound-ce" ]; then
+    mkdir -p "$HOME/WindowsTools/bloodhound-ce"
+    wget -qO "$HOME/WindowsTools/bloodhound-ce/bloodhound-cli.tar.gz" \
+        https://github.com/SpecterOps/bloodhound-cli/releases/latest/download/bloodhound-cli-linux-amd64.tar.gz
+    tar -xzf "$HOME/WindowsTools/bloodhound-ce/bloodhound-cli.tar.gz" -C "$HOME/WindowsTools/bloodhound-ce"
+    chmod +x "$HOME/WindowsTools/bloodhound-ce/bloodhound-cli"
+    "$HOME/WindowsTools/bloodhound-ce/bloodhound-cli" install
+fi
 
 # Impacket
 uv tool install git+https://github.com/fortra/impacket.git
@@ -85,13 +86,28 @@ uv tool install git+https://github.com/cddmp/enum4linux-ng.git
 uv tool install git+https://github.com/dirkjanm/ldapdomaindump.git
 
 # ldapsearch
+sudo apt install -y ldap-utils
 
 # smbmap
 uv tool install git+https://github.com/ShawnDEvans/smbmap.git
 
 # windapsearch
+if ! command -v windapsearch &>/dev/null; then
+    sudo apt install -y golang-go
+    mkdir -p ~/WindowsTools/windapsearch
+    git clone https://github.com/ropnop/go-windapsearch.git ~/WindowsTools/windapsearch
+    cd ~/WindowsTools/windapsearch && go build ./cmd/windapsearch
+    sudo ln -sf "$(pwd)/windapsearch" /usr/local/bin/windapsearch
+fi
 
 # shortscan
+if ! command -v shortscan &>/dev/null; then
+    sudo apt install -y golang-go
+    mkdir -p ~/WindowsTools/shortscan
+    git clone https://github.com/bitquark/shortscan.git ~/WindowsTools/shortscan
+    cd ~/WindowsTools/shortscan/cmd/shortscan && go build
+    sudo ln -sf "$(pwd)/shortscan" /usr/local/bin/shortscan
+fi
 
 # ds_walk
 uv tool install git+https://github.com/Keramas/DS_Walk.git
@@ -103,10 +119,13 @@ uv tool install git+https://github.com/ShutdownRepo/targetedKerberoast.git
 uv tool install git+https://github.com/mubix/pykek.git
 
 # Kerbrute (sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt | Create users list from ldapdomaindump | Hashcat mode 18200)
-mkdir ~/WindowsTools/kerbrute
-sudo git clone https://github.com/ropnop/kerbrute.git ~/WindowsTools/kerbrute
-sudo make -C ~/WindowsTools/kerbrute all
-sudo ln -s ~/WindowsTools/kerbrute/dist/kerbrute_linux_amd64 /usr/local/bin/kerbrute
+if ! command -v kerbrute &>/dev/null; then
+    sudo apt install -y golang-go
+    mkdir -p ~/WindowsTools/kerbrute
+    git clone https://github.com/ropnop/kerbrute.git ~/WindowsTools/kerbrute
+    sudo make -C ~/WindowsTools/kerbrute all
+    sudo ln -sf ~/WindowsTools/kerbrute/dist/kerbrute_linux_amd64 /usr/local/bin/kerbrute
+fi
 
 #===============================================================================
 # PIVOTING TOOLING =============================================================
