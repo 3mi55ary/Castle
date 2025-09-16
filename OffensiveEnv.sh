@@ -10,25 +10,7 @@
 #===============================================================================
 
 #===============================================================================
-# System Basics ================================================================
-#===============================================================================
-# Create Base Staging Areas
-mkdir -p ~/Captures ~/WindowsTools ~/PivotingTools ~/Monitoring ~/Loot
-
-# Install UV
-export PATH="$HOME/.local/bin:$PATH"
-echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
-if ! command -v uv &>/dev/null; then
-    curl -LsSf https://astral.sh/uv/install.sh | sh
-fi
-
-# Install Golang
-if ! command -v go &>/dev/null; then
-    sudo apt install -y golang-go
-fi
-
-#===============================================================================
-# Docker + Compose (Official Docker Repo, Debian Bullseye) =====================
+# Docker + Compose (Official Docker Repo, Debian Bullseye) ===================== -- TESTED
 #===============================================================================
 # Install prerequisites
 sudo apt update
@@ -68,6 +50,27 @@ sudo usermod -aG docker "$USER"
 echo "[+] Docker installation complete. Log out/in or run 'newgrp docker' to use without sudo."
 
 #===============================================================================
+# System Basics ================================================================ -- TESTED
+#===============================================================================
+# Updates Kali GPG keyring
+sudo wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/kali-archive-keyring.gpg
+
+# Create Base Staging Areas
+mkdir -p ~/Captures ~/WindowsTools ~/PivotingTools ~/Monitoring ~/Loot
+
+# Install UV
+export PATH="$HOME/.local/bin:$PATH"
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
+if ! command -v uv &>/dev/null; then
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+fi
+
+# Install Golang
+if ! command -v go &>/dev/null; then
+    sudo apt install -y golang-go
+fi
+
+#===============================================================================
 # Screenshots / Captures =======================================================
 #===============================================================================
 # Install and Configure Flameshot for Instant Usage
@@ -87,31 +90,35 @@ xfconf-query -c xfce4-screenshooter \
 # NetExec
 uv tool install git+https://github.com/Pennyw0rth/NetExec.git
 
-# BloodHound-CE
-if ! command -v docker &>/dev/null; then
-    sudo apt install -y docker.io docker-compose-plugin
-    sudo systemctl enable --now docker
+# BloodHound-CE (Courtesy of wi0n - https://github.com/wi0n)
+BLOODHOUND_DIR="$HOME/WindowsTools/bloodhound"
+BLOODHOUND_YML="$BLOODHOUND_DIR/docker-compose.yml"
+BLOODHOUND_PORT=7777
+BLOODHOUND_PASSWORD_FILE="$BLOODHOUND_DIR/admin_password.txt"
+mkdir -p "$BLOODHOUND_DIR"
+if [ ! -f "$BLOODHOUND_YML" ]; then
+    curl -Lo "$BLOODHOUND_YML" https://ghst.ly/getbhce
 fi
-if [ ! -d "$HOME/WindowsTools/bloodhound-ce" ]; then
-    mkdir -p "$HOME/WindowsTools/bloodhound-ce"
-    wget -qO "$HOME/WindowsTools/bloodhound-ce/bloodhound-cli.tar.gz" \
-        https://github.com/SpecterOps/bloodhound-cli/releases/latest/download/bloodhound-cli-linux-amd64.tar.gz
-    tar -xzf "$HOME/WindowsTools/bloodhound-ce/bloodhound-cli.tar.gz" -C "$HOME/WindowsTools/bloodhound-ce"
-    chmod +x "$HOME/WindowsTools/bloodhound-ce/bloodhound-cli"
-    "$HOME/WindowsTools/bloodhound-ce/bloodhound-cli" install
+if ! docker ps -qf "ancestor=specterops/bloodhound:latest" | grep -q .; then
+    sg docker -c "docker-compose -f $BLOODHOUND_YML pull"
+    sg docker -c "BLOODHOUND_HOST=0.0.0.0 BLOODHOUND_PORT=$BLOODHOUND_PORT docker-compose -f $BLOODHOUND_YML up -d"
+    echo -n "[*] Waiting for BloodHound API to be ready"
+    until curl -s -f http://localhost:$BLOODHOUND_PORT >/dev/null 2>&1; do
+        echo -n "."
+        sleep 2
+    done
+    echo " Ready!"
+    sg docker -c "docker logs \$(docker ps -qf 'ancestor=specterops/bloodhound:latest')" \
+        | grep -i 'initial password' | cut -d# -f2 > "$BLOODHOUND_PASSWORD_FILE"
 fi
+echo "[+] BloodHound CE is running at http://localhost:$BLOODHOUND_PORT"
+echo "[+] Admin password saved to $BLOODHOUND_PASSWORD_FILE"
 
 # RustHound
-RUSTHOUND_DIR="$HOME/WindowsTools/rusthound"
-if [ ! -d "$RUSTHOUND_DIR/.git" ]; then
-    mkdir -p "$HOME/WindowsTools"
-    git clone https://github.com/NH-RED-TEAM/RustHound.git "$RUSTHOUND_DIR"
-fi
-if ! docker image inspect rusthound:latest >/dev/null 2>&1; then
-    docker build --rm -t rusthound "$RUSTHOUND_DIR"
-fi
-docker run --rm -v "$RUSTHOUND_DIR":/usr/src/rusthound rusthound linux_musl
-echo "[+] RustHound binary built in $RUSTHOUND_DIR"
+curl https://sh.rustup.rs -sSf | sh -s -- -y
+source "$HOME/.cargo/env"
+cargo install rusthound-ce
+echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.zshrc
 
 # Impacket
 uv tool install git+https://github.com/fortra/impacket.git
