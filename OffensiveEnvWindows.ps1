@@ -65,6 +65,10 @@ function Run-EXE($exe, $args) {
 #===============================================================================
 # Tool Installation ============================================================
 #===============================================================================
+# ADRecon
+# mkdir ~/WindowsTools/adrecon
+# git clone https://github.com/sense-of-security/ADRecon.git ~/WindowsTools/adrecon
+
 # Inveigh
 Get-ToolGit -name "Inveigh" -gitURL "https://github.com/Kevin-Robertson/Inveigh.git" -destination "Inveigh"
 
