@@ -91,28 +91,7 @@ xfconf-query -c xfce4-screenshooter \
 uv tool install git+https://github.com/Pennyw0rth/NetExec.git
 
 # BloodHound-CE (Courtesy of wi0n - https://github.com/wi0n)
-BLOODHOUND_DIR="$HOME/WindowsTools/bloodhound"
-BLOODHOUND_YML="$BLOODHOUND_DIR/docker-compose.yml"
-BLOODHOUND_PORT=7777
-BLOODHOUND_PASSWORD_FILE="$BLOODHOUND_DIR/admin_password.txt"
-mkdir -p "$BLOODHOUND_DIR"
-if [ ! -f "$BLOODHOUND_YML" ]; then
-    curl -Lo "$BLOODHOUND_YML" https://ghst.ly/getbhce
-fi
-if ! docker ps -qf "ancestor=specterops/bloodhound:latest" | grep -q .; then
-    sg docker -c "docker-compose -f $BLOODHOUND_YML pull"
-    sg docker -c "BLOODHOUND_HOST=0.0.0.0 BLOODHOUND_PORT=$BLOODHOUND_PORT docker-compose -f $BLOODHOUND_YML up -d"
-    echo -n "[*] Waiting for BloodHound API to be ready"
-    until curl -s -f http://localhost:$BLOODHOUND_PORT/ui/login >/dev/null 2>&1; do
-        echo -n "."
-        sleep 2
-    done
-    echo " Ready!"
-    sg docker -c "docker logs \$(docker ps -qf 'ancestor=specterops/bloodhound:latest')" \
-        | grep -i 'initial password' | cut -d# -f2 > "$BLOODHOUND_PASSWORD_FILE"
-fi
-echo "[+] BloodHound CE is running at http://localhost:$BLOODHOUND_PORT"
-echo "[+] Admin password saved to $BLOODHOUND_PASSWORD_FILE"
+
 
 # RustHound
 curl https://sh.rustup.rs -sSf | sh -s -- -y
