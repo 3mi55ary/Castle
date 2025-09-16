@@ -103,7 +103,7 @@ if ! docker ps -qf "ancestor=specterops/bloodhound:latest" | grep -q .; then
     sg docker -c "docker-compose -f $BLOODHOUND_YML pull"
     sg docker -c "BLOODHOUND_HOST=0.0.0.0 BLOODHOUND_PORT=$BLOODHOUND_PORT docker-compose -f $BLOODHOUND_YML up -d"
     echo -n "[*] Waiting for BloodHound API to be ready"
-    until curl -s -f http://localhost:$BLOODHOUND_PORT >/dev/null 2>&1; do
+    until curl -s -f http://localhost:$BLOODHOUND_PORT/ui/login >/dev/null 2>&1; do
         echo -n "."
         sleep 2
     done
