@@ -12,9 +12,6 @@
 #===============================================================================
 # System Basics ================================================================
 #===============================================================================
-# Prepare System
-sudo apt update
-
 # Create Base Staging Areas
 mkdir -p ~/Captures ~/WindowsTools ~/PivotingTools ~/Monitoring ~/Loot
 
@@ -24,6 +21,51 @@ echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 if ! command -v uv &>/dev/null; then
     curl -LsSf https://astral.sh/uv/install.sh | sh
 fi
+
+# Install Golang
+if ! command -v go &>/dev/null; then
+    sudo apt install -y golang-go
+fi
+
+#===============================================================================
+# Docker + Compose (Official Docker Repo, Debian Bullseye) =====================
+#===============================================================================
+# Install prerequisites
+sudo apt update
+sudo apt install -y ca-certificates curl gnupg lsb-release
+
+# Add Docker's official GPG key (only if missing)
+if [ ! -f /usr/share/keyrings/docker-archive-keyring.gpg ]; then
+    curl -fsSL https://download.docker.com/linux/debian/gpg \
+        | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+fi
+
+# Add Docker apt repository (only if missing)
+if [ ! -f /etc/apt/sources.list.d/docker.list ]; then
+    echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] \
+      https://download.docker.com/linux/debian bullseye stable" \
+      | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+fi
+
+# Update and install Docker Engine + plugins
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+# Install latest standalone docker-compose binary (optional, for scripts expecting it)
+if [ ! -f /usr/local/bin/docker-compose ]; then
+    sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" \
+        -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+fi
+
+# Enable and start Docker
+sudo systemctl enable --now docker
+
+# Add current user to docker group (requires re-login to take effect)
+sudo usermod -aG docker "$USER"
+
+echo "[+] Docker installation complete. Log out/in or run 'newgrp docker' to use without sudo."
 
 #===============================================================================
 # Screenshots / Captures =======================================================
@@ -59,6 +101,18 @@ if [ ! -d "$HOME/WindowsTools/bloodhound-ce" ]; then
     "$HOME/WindowsTools/bloodhound-ce/bloodhound-cli" install
 fi
 
+# RustHound
+RUSTHOUND_DIR="$HOME/WindowsTools/rusthound"
+if [ ! -d "$RUSTHOUND_DIR/.git" ]; then
+    mkdir -p "$HOME/WindowsTools"
+    git clone https://github.com/NH-RED-TEAM/RustHound.git "$RUSTHOUND_DIR"
+fi
+if ! docker image inspect rusthound:latest >/dev/null 2>&1; then
+    docker build --rm -t rusthound "$RUSTHOUND_DIR"
+fi
+docker run --rm -v "$RUSTHOUND_DIR":/usr/src/rusthound rusthound linux_musl
+echo "[+] RustHound binary built in $RUSTHOUND_DIR"
+
 # Impacket
 uv tool install git+https://github.com/fortra/impacket.git
 uv tool install git+https://github.com/dirkjanm/krbrelayx.git
@@ -93,7 +147,6 @@ uv tool install git+https://github.com/ShawnDEvans/smbmap.git
 
 # windapsearch
 if ! command -v windapsearch &>/dev/null; then
-    sudo apt install -y golang-go
     mkdir -p ~/WindowsTools/windapsearch
     git clone https://github.com/ropnop/go-windapsearch.git ~/WindowsTools/windapsearch
     cd ~/WindowsTools/windapsearch && go build ./cmd/windapsearch
@@ -102,7 +155,6 @@ fi
 
 # shortscan
 if ! command -v shortscan &>/dev/null; then
-    sudo apt install -y golang-go
     mkdir -p ~/WindowsTools/shortscan
     git clone https://github.com/bitquark/shortscan.git ~/WindowsTools/shortscan
     cd ~/WindowsTools/shortscan/cmd/shortscan && go build
@@ -120,7 +172,6 @@ uv tool install git+https://github.com/mubix/pykek.git
 
 # Kerbrute (sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt | Create users list from ldapdomaindump | Hashcat mode 18200)
 if ! command -v kerbrute &>/dev/null; then
-    sudo apt install -y golang-go
     mkdir -p ~/WindowsTools/kerbrute
     git clone https://github.com/ropnop/kerbrute.git ~/WindowsTools/kerbrute
     sudo make -C ~/WindowsTools/kerbrute all
@@ -131,9 +182,11 @@ fi
 # PIVOTING TOOLING =============================================================
 #===============================================================================
 # Ligolo
-mkdir ~/PivotingTools/Ligolo
-wget -P ~/PivotingTools/Ligolo https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz
-tar -xvzf ~/PivotingTools/Ligolo/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz -C ~/PivotingTools/Ligolo
+if [ ! -f ~/PivotingTools/Ligolo/ligolo-ng_proxy ]; then
+    mkdir -p ~/PivotingTools/Ligolo
+    wget -P ~/PivotingTools/Ligolo https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz
+    tar -xvzf ~/PivotingTools/Ligolo/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz -C ~/PivotingTools/Ligolo
+fi
 
 #chisel
 
