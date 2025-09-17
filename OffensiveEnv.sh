@@ -70,6 +70,10 @@ if ! command -v go &>/dev/null; then
     sudo apt install -y golang-go
 fi
 
+# Install Rust
+curl https://sh.rustup.rs -sSf | sh -s -- -y
+source "$HOME/.cargo/env"
+
 #===============================================================================
 # Screenshots / Captures =======================================================
 #===============================================================================
@@ -91,11 +95,23 @@ xfconf-query -c xfce4-screenshooter \
 uv tool install git+https://github.com/Pennyw0rth/NetExec.git
 
 # BloodHound-CE (Courtesy of wi0n - https://github.com/wi0n)
+mkdir -p ~/bloodhound
+curl -Lo ~/bloodhound/docker-compose.yml https://ghst.ly/getbhce
+sg docker -c 'docker-compose -f ~/bloodhound/docker-compose.yml pull'
+sg docker -c '
+BLOODHOUND_HOST=0.0.0.0 BLOODHOUND_PORT=8888 docker-compose -f ~/bloodhound/docker-compose.yml up -d
 
+# Wait for the API to respond
+echo "Waiting for BloodHound API to be ready..."
+until curl -s -f http://localhost:8888 >/dev/null 2>&1; do
+    echo -n "."
+    sleep 2
+done
+echo " Ready!"
+
+'
 
 # RustHound
-curl https://sh.rustup.rs -sSf | sh -s -- -y
-source "$HOME/.cargo/env"
 cargo install rusthound-ce
 echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.zshrc
 
