@@ -80,7 +80,6 @@ source "$HOME/.cargo/env"
 # Install and Configure Flameshot for Instant Usage
 sudo apt install -y flameshot
 flameshot &
-flameshot gui --path "$HOME/Captures" --accept-on-select &
 
 # Set XFCE's default screenshot save path (BACKUP)
 xfconf-query -c xfce4-screenshooter \
