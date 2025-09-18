@@ -48,15 +48,18 @@ sudo systemctl enable --now docker
 sudo usermod -aG docker "$USER"
 
 echo "[+] Docker installation complete. Log out/in or run 'newgrp docker' to use without sudo."
+echo "[+] Docker Deployed" >> ~/Report.txt
 
 #===============================================================================
 # System Basics ================================================================ -- TESTED
 #===============================================================================
 # Updates Kali GPG keyring
 sudo wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/kali-archive-keyring.gpg
+echo "[+] GPG Keyring Updated" >> ~/Report.txt
 
 # Create Base Staging Areas
 mkdir -p ~/Captures ~/WindowsTools ~/PivotingTools ~/Monitoring ~/Loot
+echo "[+] Staging Areas Created" >> ~/Report.txt
 
 # Install UV
 export PATH="$HOME/.local/bin:$PATH"
@@ -64,15 +67,18 @@ echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 if ! command -v uv &>/dev/null; then
     curl -LsSf https://astral.sh/uv/install.sh | sh
 fi
+echo "[+] UV Installed" >> ~/Report.txt
 
 # Install Golang
 if ! command -v go &>/dev/null; then
     sudo apt install -y golang-go
 fi
+echo "[+] Golang Installed" >> ~/Report.txt
 
 # Install Rust
 curl https://sh.rustup.rs -sSf | sh -s -- -y
 source "$HOME/.cargo/env"
+echo "[+] Rust Installed" >> ~/Report.txt
 
 #===============================================================================
 # Screenshots / Captures =======================================================
@@ -80,11 +86,13 @@ source "$HOME/.cargo/env"
 # Install and Configure Flameshot for Instant Usage
 sudo apt install -y flameshot
 flameshot &
+echo "[+] Flameshot Deployed" >> ~/Report.txt
 
 # Set XFCE's default screenshot save path (BACKUP)
 xfconf-query -c xfce4-screenshooter \
     -p /last-save-location \
     -s "$HOME/Captures"
+echo "[+] XFCE Default Path Changed" >> ~/Report.txt
 
 #===============================================================================
 # WINDOWS TOOLING ==============================================================
@@ -92,6 +100,7 @@ xfconf-query -c xfce4-screenshooter \
 # https://wadcoms.github.io/
 # NetExec
 uv tool install git+https://github.com/Pennyw0rth/NetExec.git
+echo "[+] NXC Deployed" >> ~/Report.txt
 
 # BloodHound-CE (Courtesy of wi0n - https://github.com/wi0n)
 mkdir -p ~/bloodhound
@@ -111,43 +120,55 @@ echo " Ready!"
 '
 sg docker -c 'echo $(docker logs $(docker ps -qf "ancestor=specterops/bloodhound:latest") | grep -i "initial password") | cut -d# -f2'
 source ~/.zshrc
+echo "[+] Bloodhound Deployed" >> ~/Report.txt
 
-# RustHound
+# Rusthound
 cargo install rusthound-ce
 export PATH="$HOME/.cargo/bin:$PATH"
 echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.zshrc
+echo "[+] Rusthound Deployed" >> ~/Report.txt
 
 # Impacket
 uv tool install git+https://github.com/fortra/impacket.git
 uv tool install git+https://github.com/dirkjanm/krbrelayx.git
+echo "[+] Impacket Deployed" >> ~/Report.txt
 
 # Responder
 uv tool install git+https://github.com/lgandx/Responder.git
+echo "[+] Responder Deployed" >> ~/Report.txt
 
 # BloodyAD
 uv tool install git+https://github.com/CravateRouge/bloodyAD.git
+echo "[+] BloodyAD Deployed" >> ~/Report.txt
 
 # Certipy-AD
 uv tool install git+https://github.com/ly4k/Certipy.git
+echo "[+] Certipy Deployed" >> ~/Report.txt
 
 # Evil-WinRM
 sudo apt install -y ruby ruby-dev libkrb5-dev
 sudo gem install evil-winrm
+echo "[+] Evil-WinRM Deployed" >> ~/Report.txt
 
 # Evil-WinRM-py
 uv tool install git+https://github.com/Hackplayers/evil-winrm-py.git
+echo "[+] Evil-WinRM-py Deployed" >> ~/Report.txt
 
 # enum4linux
 uv tool install git+https://github.com/cddmp/enum4linux-ng.git
+echo "[+] enum4linux Deployed" >> ~/Report.txt
 
 # ldapdomaindump (sudo python3 ldapdomaindump.py ldap://DC -u 'DOMAIN\user' -p 'Password')
 uv tool install git+https://github.com/dirkjanm/ldapdomaindump.git
+echo "[+] ldapdomaindump Deployed" >> ~/Report.txt
 
 # ldapsearch
 sudo apt install -y ldap-utils
+echo "[+] ldapsearch Deployed" >> ~/Report.txt
 
 # smbmap
 uv tool install git+https://github.com/ShawnDEvans/smbmap.git
+echo "[+] smbmap Deployed" >> ~/Report.txt
 
 # windapsearch
 if ! command -v windapsearch &>/dev/null; then
@@ -155,7 +176,9 @@ if ! command -v windapsearch &>/dev/null; then
     git clone https://github.com/ropnop/go-windapsearch.git ~/WindowsTools/windapsearch
     cd ~/WindowsTools/windapsearch && go build ./cmd/windapsearch
     sudo ln -sf "$(pwd)/windapsearch" /usr/local/bin/windapsearch
+    echo "[+] windapsearch Deployed" >> ~/Report.txt
 fi
+
 
 # shortscan
 if ! command -v shortscan &>/dev/null; then
@@ -163,16 +186,20 @@ if ! command -v shortscan &>/dev/null; then
     git clone https://github.com/bitquark/shortscan.git ~/WindowsTools/shortscan
     cd ~/WindowsTools/shortscan/cmd/shortscan && go build
     sudo ln -sf "$(pwd)/shortscan" /usr/local/bin/shortscan
+    echo "[+] shortscan Deployed" >> ~/Report.txt
 fi
 
 # ds_walk
 uv tool install git+https://github.com/Keramas/DS_Walk.git
+echo "[+] DS_Walk Deployed" >> ~/Report.txt
 
 # https://github.com/ShutdownRepo/targetedKerberoast
 uv tool install git+https://github.com/ShutdownRepo/targetedKerberoast.git
+echo "[+] TargetedKerberoast Deployed" >> ~/Report.txt
 
 # https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS14-068/pykek
 uv tool install git+https://github.com/mubix/pykek.git
+echo "[+] pykek Deployed" >> ~/Report.txt
 
 # Kerbrute (sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt | Create users list from ldapdomaindump | Hashcat mode 18200)
 if ! command -v kerbrute &>/dev/null; then
@@ -180,6 +207,7 @@ if ! command -v kerbrute &>/dev/null; then
     git clone https://github.com/ropnop/kerbrute.git ~/WindowsTools/kerbrute
     sudo make -C ~/WindowsTools/kerbrute all
     sudo ln -sf ~/WindowsTools/kerbrute/dist/kerbrute_linux_amd64 /usr/local/bin/kerbrute
+    echo "[+] Kerbrute Deployed" >> ~/Report.txt
 fi
 
 #===============================================================================
@@ -190,6 +218,7 @@ if [ ! -f ~/PivotingTools/Ligolo/ligolo-ng_proxy ]; then
     mkdir -p ~/PivotingTools/Ligolo
     wget -P ~/PivotingTools/Ligolo https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz
     tar -xvzf ~/PivotingTools/Ligolo/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz -C ~/PivotingTools/Ligolo
+    echo "[+] Ligolo Deployed" >> ~/Report.txt
 fi
 
 #chisel
