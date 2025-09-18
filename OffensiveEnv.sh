@@ -115,6 +115,7 @@ source ~/.zshrc
 
 # RustHound
 cargo install rusthound-ce
+export PATH="$HOME/.cargo/bin:$PATH"
 echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.zshrc
 
 # Impacket
