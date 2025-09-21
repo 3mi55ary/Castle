@@ -120,6 +120,7 @@ echo " Ready!"
 '
 sg docker -c 'echo $(docker logs $(docker ps -qf "ancestor=specterops/bloodhound:latest") | grep -i "initial password") | cut -d# -f2'
 source ~/.zshrc
+sg docker -c 'echo $(docker logs $(docker ps -qf "ancestor=specterops/bloodhound:latest") | grep -i "initial password") | cut -d# -f2' >> ~/Report.txt
 echo "[+] Bloodhound Deployed" >> ~/Report.txt
 
 # Rusthound
