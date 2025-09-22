@@ -106,7 +106,9 @@ until curl -sfI http://localhost:8080/ui >/dev/null; do
     sleep 5
 done
 sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:"
+sudo docker logs $(uname -n)-bloodhound-1 2>&1 | grep "Initial Password Set To:"
 sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
+sudo docker logs $(uname -n)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
 echo "[+] Bloodhound-CE Deployed" >> ~/Report.txt
 
 # Bloodhound-CE Ingestor (Python Based)
