@@ -105,10 +105,11 @@ echo "[+] NXC Deployed" >> ~/Report.txt
 # BloodHound-CE
 sudo curl -L https://ghst.ly/getbhce | sudo docker-compose -f - up
 sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:"
-echo "[+] Bloodhound Deployed" >> ~/Report.txt
+echo "[+] Bloodhound-CE Deployed" >> ~/Report.txt
 
 # Bloodhound-CE Ingestor (Python Based)
 uv tool install git+https://github.com/dirkjanm/BloodHound.py@bloodhound-ce
+echo "[+] Bloodhound-CE Ingestor Deployed" >> ~/Report.txt
 
 # Rusthound
 cargo install rusthound-ce
