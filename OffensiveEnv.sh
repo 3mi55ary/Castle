@@ -263,3 +263,6 @@ if [[ "$ans" =~ ^[Yy]$ ]]; then
         -p /backdrop/screen0/monitor0/image-show \
         -s true
 fi
+
+# Finishing Print Statement
+echo "[+] Lets Roll" >> ~/Report.txt
