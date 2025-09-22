@@ -93,8 +93,6 @@ echo "[+] XFCE Default Path Changed" >> ~/Report.txt
 # WINDOWS TOOLING ==============================================================
 #===============================================================================
 # https://wadcoms.github.io/
-
-# SAFE TOOLING -------------------------------------------------------------------------------------------------------
 # NetExec
 uv tool install git+https://github.com/Pennyw0rth/NetExec.git
 echo "[+] NXC Deployed" >> ~/Report.txt
@@ -141,7 +139,13 @@ echo "[+] ldapsearch Deployed" >> ~/Report.txt
 uv tool install git+https://github.com/ShawnDEvans/smbmap.git
 echo "[+] smbmap Deployed" >> ~/Report.txt
 
-# Kerbrute (sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt | Create users list from ldapdomaindump | Hashcat mode 18200)
+# responder
+mkdir -p ~/WindowsTools/responder
+git clone https://github.com/lgandx/Responder.git ~/WindowsTools/responder
+sudo ln -s ~/WindowsTools/responder/Responder.py /usr/local/bin/responder2
+echo "[+] Responder Deployed" >> ~/Report.txt
+
+# kerbrute (sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt | Create users list from ldapdomaindump | Hashcat mode 18200)
 if ! command -v kerbrute &>/dev/null; then
     mkdir -p ~/WindowsTools/kerbrute
     git clone https://github.com/ropnop/kerbrute.git ~/WindowsTools/kerbrute
@@ -168,6 +172,16 @@ if ! command -v shortscan &>/dev/null; then
     echo "[+] shortscan Deployed" >> ~/Report.txt
 fi
 
+# mimikatz
+mkdir -p ~/WindowsTools/mimikatz
+git clone https://github.com/ParrotSec/mimikatz.git ~/WindowsTools/mimikatz
+echo "[+] Mimikatz Added" >> ~/Report.txt
+
+# powersploit (RECON -> Upload PowerView.ps1)
+mkdir -p ~/WindowsTools/powersploit
+git clone https://github.com/PowerShellMafia/PowerSploit.git ~/WindowsTools/powersploit
+echo "[+] PowerSploit Added" >> ~/Report.txt
+
 # Rusthound
 # curl https://sh.rustup.rs -sSf | sh -s -- -y
 # source "$HOME/.cargo/env"
@@ -179,10 +193,6 @@ fi
 # UNTESTED TOOLING -------------------------------------------------------------------------------------------------------
 
 uv tool install git+https://github.com/dirkjanm/krbrelayx.git # ERRORS HERE
-
-# Responder
-uv tool install git+https://github.com/lgandx/Responder.git # ERRORS HERE
-echo "[+] Responder Deployed" >> ~/Report.txt
 
 # Evil-WinRM-py
 uv tool install git+https://github.com/Hackplayers/evil-winrm-py.git # ERRORS HERE
@@ -199,9 +209,6 @@ echo "[+] TargetedKerberoast Deployed" >> ~/Report.txt
 # https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS14-068/pykek
 uv tool install git+https://github.com/mubix/pykek.git # ERRORS HERE
 echo "[+] pykek Deployed" >> ~/Report.txt
-
-# mimikatz.exe
-# powerview.ps1
 
 #===============================================================================
 # PIVOTING TOOLING =============================================================
