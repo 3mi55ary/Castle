@@ -218,7 +218,7 @@ echo "[+] PowerSploit Added" >> ~/Report.txt
 
 # UNTESTED TOOLING -------------------------------------------------------------------------------------------------------
 
-# targetedkerberoast (Abuses ACLs to Add SPN and Kerberoast)
+# targetedkerberoast (Abuses ACLs to Add an SPN and Kerberoast)
 # https://github.com/ShutdownRepo/targetedKerberoast
 #uv tool install git+https://github.com/ShutdownRepo/targetedKerberoast.git # ERRORS HERE
 #echo "[+] TargetedKerberoast Deployed" >> ~/Report.txt
