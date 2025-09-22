@@ -192,23 +192,23 @@ echo "[+] PowerSploit Added" >> ~/Report.txt
 
 # UNTESTED TOOLING -------------------------------------------------------------------------------------------------------
 
-uv tool install git+https://github.com/dirkjanm/krbrelayx.git # ERRORS HERE
+#uv tool install git+https://github.com/dirkjanm/krbrelayx.git # ERRORS HERE
 
 # Evil-WinRM-py
-uv tool install git+https://github.com/Hackplayers/evil-winrm-py.git # ERRORS HERE
-echo "[+] Evil-WinRM-py Deployed" >> ~/Report.txt
+#uv tool install git+https://github.com/Hackplayers/evil-winrm-py.git # ERRORS HERE
+#echo "[+] Evil-WinRM-py Deployed" >> ~/Report.txt
 
 # ds_walk
-uv tool install git+https://github.com/Keramas/DS_Walk.git # ERRORS HERE
-echo "[+] DS_Walk Deployed" >> ~/Report.txt
+#uv tool install git+https://github.com/Keramas/DS_Walk.git # ERRORS HERE
+#echo "[+] DS_Walk Deployed" >> ~/Report.txt
 
 # https://github.com/ShutdownRepo/targetedKerberoast
-uv tool install git+https://github.com/ShutdownRepo/targetedKerberoast.git # ERRORS HERE
-echo "[+] TargetedKerberoast Deployed" >> ~/Report.txt
+#uv tool install git+https://github.com/ShutdownRepo/targetedKerberoast.git # ERRORS HERE
+#echo "[+] TargetedKerberoast Deployed" >> ~/Report.txt
 
 # https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS14-068/pykek
-uv tool install git+https://github.com/mubix/pykek.git # ERRORS HERE
-echo "[+] pykek Deployed" >> ~/Report.txt
+#uv tool install git+https://github.com/mubix/pykek.git # ERRORS HERE
+#echo "[+] pykek Deployed" >> ~/Report.txt
 
 #===============================================================================
 # PIVOTING TOOLING =============================================================
