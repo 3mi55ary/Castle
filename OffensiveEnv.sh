@@ -98,7 +98,10 @@ uv tool install git+https://github.com/Pennyw0rth/NetExec.git
 echo "[+] NXC Deployed" >> ~/Report.txt
 
 # BloodHound-CE
-sudo curl -L https://ghst.ly/getbhce | sudo docker-compose -f - up
+sudo curl -L https://ghst.ly/getbhce | sudo docker-compose -f - up -d
+until curl -sfI http://localhost:8080/ui >/dev/null; do
+    sleep 5
+done
 sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:"
 echo "[+] Bloodhound-CE Deployed" >> ~/Report.txt
 
