@@ -75,11 +75,6 @@ if ! command -v go &>/dev/null; then
 fi
 echo "[+] Golang Installed" >> ~/Report.txt
 
-# Install Rust
-curl https://sh.rustup.rs -sSf | sh -s -- -y
-source "$HOME/.cargo/env"
-echo "[+] Rust Installed" >> ~/Report.txt
-
 #===============================================================================
 # Screenshots / Captures =======================================================
 #===============================================================================
@@ -98,6 +93,8 @@ echo "[+] XFCE Default Path Changed" >> ~/Report.txt
 # WINDOWS TOOLING ==============================================================
 #===============================================================================
 # https://wadcoms.github.io/
+
+# SAFE TOOLING -------------------------------------------------------------------------------------------------------
 # NetExec
 uv tool install git+https://github.com/Pennyw0rth/NetExec.git
 echo "[+] NXC Deployed" >> ~/Report.txt
@@ -111,20 +108,13 @@ echo "[+] Bloodhound-CE Deployed" >> ~/Report.txt
 uv tool install git+https://github.com/dirkjanm/BloodHound.py@bloodhound-ce
 echo "[+] Bloodhound-CE Ingestor Deployed" >> ~/Report.txt
 
-# Rusthound
-cargo install rusthound-ce
-export PATH="$HOME/.cargo/bin:$PATH"
-echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.zshrc
-echo "[+] Rusthound Deployed" >> ~/Report.txt
-
 # Impacket
 uv tool install git+https://github.com/fortra/impacket.git
-uv tool install git+https://github.com/dirkjanm/krbrelayx.git
 echo "[+] Impacket Deployed" >> ~/Report.txt
 
-# Responder
-uv tool install git+https://github.com/lgandx/Responder.git
-echo "[+] Responder Deployed" >> ~/Report.txt
+# ldapdomaindump (sudo python3 ldapdomaindump.py ldap://DC -u 'DOMAIN\user' -p 'Password')
+uv tool install git+https://github.com/dirkjanm/ldapdomaindump.git
+echo "[+] ldapdomaindump Deployed" >> ~/Report.txt
 
 # BloodyAD
 uv tool install git+https://github.com/CravateRouge/bloodyAD.git
@@ -139,17 +129,9 @@ sudo apt install -y ruby ruby-dev libkrb5-dev
 sudo gem install evil-winrm
 echo "[+] Evil-WinRM Deployed" >> ~/Report.txt
 
-# Evil-WinRM-py
-uv tool install git+https://github.com/Hackplayers/evil-winrm-py.git
-echo "[+] Evil-WinRM-py Deployed" >> ~/Report.txt
-
 # enum4linux
 uv tool install git+https://github.com/cddmp/enum4linux-ng.git
 echo "[+] enum4linux Deployed" >> ~/Report.txt
-
-# ldapdomaindump (sudo python3 ldapdomaindump.py ldap://DC -u 'DOMAIN\user' -p 'Password')
-uv tool install git+https://github.com/dirkjanm/ldapdomaindump.git
-echo "[+] ldapdomaindump Deployed" >> ~/Report.txt
 
 # ldapsearch
 sudo apt install -y ldap-utils
@@ -158,6 +140,15 @@ echo "[+] ldapsearch Deployed" >> ~/Report.txt
 # smbmap
 uv tool install git+https://github.com/ShawnDEvans/smbmap.git
 echo "[+] smbmap Deployed" >> ~/Report.txt
+
+# Kerbrute (sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt | Create users list from ldapdomaindump | Hashcat mode 18200)
+if ! command -v kerbrute &>/dev/null; then
+    mkdir -p ~/WindowsTools/kerbrute
+    git clone https://github.com/ropnop/kerbrute.git ~/WindowsTools/kerbrute
+    sudo make -C ~/WindowsTools/kerbrute all
+    sudo ln -sf ~/WindowsTools/kerbrute/dist/kerbrute_linux_amd64 /usr/local/bin/kerbrute
+    echo "[+] Kerbrute Deployed" >> ~/Report.txt
+fi
 
 # windapsearch
 if ! command -v windapsearch &>/dev/null; then
@@ -168,7 +159,6 @@ if ! command -v windapsearch &>/dev/null; then
     echo "[+] windapsearch Deployed" >> ~/Report.txt
 fi
 
-
 # shortscan
 if ! command -v shortscan &>/dev/null; then
     mkdir -p ~/WindowsTools/shortscan
@@ -178,26 +168,40 @@ if ! command -v shortscan &>/dev/null; then
     echo "[+] shortscan Deployed" >> ~/Report.txt
 fi
 
+# Rusthound
+# curl https://sh.rustup.rs -sSf | sh -s -- -y
+# source "$HOME/.cargo/env"
+# cargo install rusthound-ce
+# export PATH="$HOME/.cargo/bin:$PATH"
+# echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.zshrc
+# echo "[+] Rusthound Deployed" >> ~/Report.txt
+
+# UNTESTED TOOLING -------------------------------------------------------------------------------------------------------
+
+uv tool install git+https://github.com/dirkjanm/krbrelayx.git # ERRORS HERE
+
+# Responder
+uv tool install git+https://github.com/lgandx/Responder.git # ERRORS HERE
+echo "[+] Responder Deployed" >> ~/Report.txt
+
+# Evil-WinRM-py
+uv tool install git+https://github.com/Hackplayers/evil-winrm-py.git # ERRORS HERE
+echo "[+] Evil-WinRM-py Deployed" >> ~/Report.txt
+
 # ds_walk
-uv tool install git+https://github.com/Keramas/DS_Walk.git
+uv tool install git+https://github.com/Keramas/DS_Walk.git # ERRORS HERE
 echo "[+] DS_Walk Deployed" >> ~/Report.txt
 
 # https://github.com/ShutdownRepo/targetedKerberoast
-uv tool install git+https://github.com/ShutdownRepo/targetedKerberoast.git
+uv tool install git+https://github.com/ShutdownRepo/targetedKerberoast.git # ERRORS HERE
 echo "[+] TargetedKerberoast Deployed" >> ~/Report.txt
 
 # https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS14-068/pykek
-uv tool install git+https://github.com/mubix/pykek.git
+uv tool install git+https://github.com/mubix/pykek.git # ERRORS HERE
 echo "[+] pykek Deployed" >> ~/Report.txt
 
-# Kerbrute (sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt | Create users list from ldapdomaindump | Hashcat mode 18200)
-if ! command -v kerbrute &>/dev/null; then
-    mkdir -p ~/WindowsTools/kerbrute
-    git clone https://github.com/ropnop/kerbrute.git ~/WindowsTools/kerbrute
-    sudo make -C ~/WindowsTools/kerbrute all
-    sudo ln -sf ~/WindowsTools/kerbrute/dist/kerbrute_linux_amd64 /usr/local/bin/kerbrute
-    echo "[+] Kerbrute Deployed" >> ~/Report.txt
-fi
+# mimikatz.exe
+# powerview.ps1
 
 #===============================================================================
 # PIVOTING TOOLING =============================================================
@@ -227,7 +231,7 @@ fi
 mkdir ~/Monitoring/duf
 git clone https://github.com/muesli/duf.git ~/Monitoring/duf
 go build -C ~/Monitoring/duf
-
+sudo cp ~/Monitoring/duf/duf /usr/local/bin/duf
 
 #===============================================================================
 # CUSTOMIZING ==================================================================
