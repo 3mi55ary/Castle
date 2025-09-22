@@ -9,6 +9,9 @@
 # NOTES         : Tested on Latest Release of Kali Linux
 #===============================================================================
 
+# Create Report
+echo "[+] Report Created" > ~/Report.txt
+
 #===============================================================================
 # Docker + Compose (Official Docker Repo) (Courtesy of wi0n - https://github.com/wi0n)
 #===============================================================================
