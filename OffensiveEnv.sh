@@ -136,6 +136,10 @@ sudo apt install -y ruby ruby-dev libkrb5-dev
 sudo gem install evil-winrm
 echo "[+] Evil-WinRM Deployed" >> ~/Report.txt
 
+# Evil-WinRM-py
+uv tool install git+https://github.com/adityatelange/evil-winrm-py.git
+echo "[+] Evil-WinRM-py Deployed" >> ~/Report.txt
+
 # enum4linux
 uv tool install git+https://github.com/cddmp/enum4linux-ng.git
 echo "[+] enum4linux Deployed" >> ~/Report.txt
@@ -181,6 +185,20 @@ if ! command -v shortscan &>/dev/null; then
     echo "[+] shortscan Deployed" >> ~/Report.txt
 fi
 
+# krbrelayx
+git clone https://github.com/dirkjanm/krbrelayx.git ~/WindowsTools/krbrelayx
+sudo ln -s ~/WindowsTools/krbrelayx/krbrelayx.py /usr/local/bin/krbrelayx.py
+sudo ln -s ~/WindowsTools/krbrelayx/dnstool.py /usr/local/bin/dnstool.py
+sudo ln -s ~/WindowsTools/krbrelayx/addspn.py /usr/local/bin/addspn.py
+sudo ln -s ~/WindowsTools/krbrelayx/printerbug.py /usr/local/bin/printerbug.py
+
+# ds_walk
+mkdir -p ~/WindowsTools/dswalk
+git clone https://github.com/Keramas/DS_Walk.git ~/WindowsTools/dswalk
+sudo ln -s ~/WindowsTools/dswalk/ds_walk.py /usr/local/bin/ds_walk.py
+sudo ln -s ~/WindowsTools/dswalk/dsstore.py /usr/local/bin/dsstore.py
+echo "[+] DS_Walk Deployed" >> ~/Report.txt
+
 # mimikatz
 mkdir -p ~/WindowsTools/mimikatz
 git clone https://github.com/ParrotSec/mimikatz.git ~/WindowsTools/mimikatz
@@ -191,7 +209,7 @@ mkdir -p ~/WindowsTools/powersploit
 git clone https://github.com/PowerShellMafia/PowerSploit.git ~/WindowsTools/powersploit
 echo "[+] PowerSploit Added" >> ~/Report.txt
 
-# Rusthound
+# Rusthound (Gives Broken Data When Ingested Into Bloodhound-CE)
 # curl https://sh.rustup.rs -sSf | sh -s -- -y
 # source "$HOME/.cargo/env"
 # cargo install rusthound-ce
@@ -200,16 +218,6 @@ echo "[+] PowerSploit Added" >> ~/Report.txt
 # echo "[+] Rusthound Deployed" >> ~/Report.txt
 
 # UNTESTED TOOLING -------------------------------------------------------------------------------------------------------
-
-#uv tool install git+https://github.com/dirkjanm/krbrelayx.git # ERRORS HERE
-
-# Evil-WinRM-py
-#uv tool install git+https://github.com/Hackplayers/evil-winrm-py.git # ERRORS HERE
-#echo "[+] Evil-WinRM-py Deployed" >> ~/Report.txt
-
-# ds_walk
-#uv tool install git+https://github.com/Keramas/DS_Walk.git # ERRORS HERE
-#echo "[+] DS_Walk Deployed" >> ~/Report.txt
 
 # https://github.com/ShutdownRepo/targetedKerberoast
 #uv tool install git+https://github.com/ShutdownRepo/targetedKerberoast.git # ERRORS HERE
