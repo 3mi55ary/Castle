@@ -8,7 +8,6 @@
 # USAGE         : sudo ./OffensiveEnv.sh
 # NOTES         : Tested on Latest Release of Kali Linux
 #===============================================================================
-
 # Create Report
 echo "[+] Report Created" > ~/Report.txt
 
