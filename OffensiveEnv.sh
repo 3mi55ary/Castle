@@ -10,7 +10,7 @@
 #===============================================================================
 
 #===============================================================================
-# Docker + Compose (Official Docker Repo, Debian Bullseye) ===================== -- TESTED
+# Docker + Compose (Official Docker Repo) (Courtesy of wi0n - https://github.com/wi0n)
 #===============================================================================
 # Install prerequisites
 sudo apt update
@@ -102,26 +102,13 @@ echo "[+] XFCE Default Path Changed" >> ~/Report.txt
 uv tool install git+https://github.com/Pennyw0rth/NetExec.git
 echo "[+] NXC Deployed" >> ~/Report.txt
 
-# BloodHound-CE (Courtesy of wi0n - https://github.com/wi0n)
-mkdir -p ~/bloodhound
-curl -Lo ~/bloodhound/docker-compose.yml https://ghst.ly/getbhce
-sg docker -c 'docker-compose -f ~/bloodhound/docker-compose.yml pull'
-sg docker -c '
-BLOODHOUND_HOST=0.0.0.0 BLOODHOUND_PORT=8888 docker-compose -f ~/bloodhound/docker-compose.yml up -d
-
-# Wait for the API to respond
-echo "Waiting for BloodHound API to be ready..."
-until curl -s -f http://localhost:8888 >/dev/null 2>&1; do
-    echo -n "."
-    sleep 2
-done
-echo " Ready!"
-
-'
-sg docker -c 'echo $(docker logs $(docker ps -qf "ancestor=specterops/bloodhound:latest") | grep -i "initial password") | cut -d# -f2'
-source ~/.zshrc
-sg docker -c 'echo $(docker logs $(docker ps -qf "ancestor=specterops/bloodhound:latest") | grep -i "initial password") | cut -d# -f2' >> ~/Report.txt
+# BloodHound-CE
+sudo curl -L https://ghst.ly/getbhce | sudo docker-compose -f - up
+sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:"
 echo "[+] Bloodhound Deployed" >> ~/Report.txt
+
+# Bloodhound-CE Ingestor (Python Based)
+uv tool install git+https://github.com/dirkjanm/BloodHound.py@bloodhound-ce
 
 # Rusthound
 cargo install rusthound-ce
