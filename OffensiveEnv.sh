@@ -203,6 +203,11 @@ mkdir -p ~/WindowsTools/mimikatz
 git clone https://github.com/ParrotSec/mimikatz.git ~/WindowsTools/mimikatz
 echo "[+] Mimikatz Added" >> ~/Report.txt
 
+# inveigh
+mkdir -p ~/WindowsTools/inveigh
+git clone https://github.com/Kevin-Robertson/Inveigh.git
+echo "[+] Inveigh Added" >> ~/Report.txt
+
 # powersploit (RECON -> Upload PowerView.ps1)
 mkdir -p ~/WindowsTools/powersploit
 git clone https://github.com/PowerShellMafia/PowerSploit.git ~/WindowsTools/powersploit
