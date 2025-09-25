@@ -4,7 +4,7 @@
 # DESCRIPTION   : Builds an offensive toolkit tailored to Windows
 # AUTHOR        : 3mi55ary
 # DATE          : 2025-08-28
-# VERSION       : 2.0
+# VERSION       : 2.3
 # USAGE         : sudo ./OffensiveEnv.sh
 # NOTES         : Tested on Latest Release of Kali Linux
 #===============================================================================
@@ -244,8 +244,15 @@ if [ ! -d ~/PivotingTools/ligolo ]; then
 fi
 
 # chisel
-curl https://i.jpillora.com/chisel! | bash
-
+if [ ! -d ~/PivotingTools/chisel ]; then
+    mkdir -p ~/PivotingTools/chisel
+    curl https://i.jpillora.com/chisel! | bash
+    wget -P ~/PivotingTools/chisel https://github.com/jpillora/chisel/releases/download/v1.11.3/chisel_1.11.3_windows_amd64.zip
+    unzip -q ~/PivotingTools/chisel/chisel_1.11.3_windows_amd64.zip -d ~/PivotingTools/chisel
+    
+    wget -P ~/PivotingTools/chisel https://github.com/jpillora/chisel/releases/download/v1.11.3/chisel_1.11.3_linux_amd64.gz
+    gunzip -c ~/PivotingTools/chisel/chisel_1.11.3_linux_amd64.gz > ~/PivotingTools/chisel/chisel_1.11.3_linux_amd64
+fi
 #===============================================================================
 # Passwords ====================================================================
 #=============================================================================== 
