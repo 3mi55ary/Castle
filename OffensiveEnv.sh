@@ -235,15 +235,16 @@ echo "[+] PowerSploit Added" >> ~/Report.txt
 #===============================================================================
 # PIVOTING TOOLING =============================================================
 #===============================================================================
-# Ligolo
-if [ ! -f ~/PivotingTools/Ligolo/ligolo-ng_proxy ]; then
-    mkdir -p ~/PivotingTools/Ligolo
-    wget -P ~/PivotingTools/Ligolo https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz
-    tar -xvzf ~/PivotingTools/Ligolo/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz -C ~/PivotingTools/Ligolo
+# ligolo
+if [ ! -d ~/PivotingTools/ligolo ]; then
+    mkdir -p ~/PivotingTools/ligolo
+    wget -P ~/PivotingTools/ligolo https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz
+    tar -xvzf ~/PivotingTools/ligolo/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz -C ~/PivotingTools/ligolo
     echo "[+] Ligolo Deployed" >> ~/Report.txt
 fi
 
-#chisel
+# chisel
+curl https://i.jpillora.com/chisel! | bash
 
 #===============================================================================
 # Passwords ====================================================================
