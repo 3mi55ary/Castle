@@ -205,7 +205,7 @@ echo "[+] Mimikatz Added" >> ~/Report.txt
 
 # inveigh
 mkdir -p ~/WindowsTools/inveigh
-git clone https://github.com/Kevin-Robertson/Inveigh.git
+git clone https://github.com/Kevin-Robertson/Inveigh.git ~/WindowsTools/inveigh
 echo "[+] Inveigh Added" >> ~/Report.txt
 
 # powersploit (RECON -> Upload PowerView.ps1)
@@ -249,9 +249,19 @@ if [ ! -d ~/PivotingTools/chisel ]; then
     curl https://i.jpillora.com/chisel! | bash
     wget -P ~/PivotingTools/chisel https://github.com/jpillora/chisel/releases/download/v1.11.3/chisel_1.11.3_windows_amd64.zip
     unzip -q ~/PivotingTools/chisel/chisel_1.11.3_windows_amd64.zip -d ~/PivotingTools/chisel
-    
     wget -P ~/PivotingTools/chisel https://github.com/jpillora/chisel/releases/download/v1.11.3/chisel_1.11.3_linux_amd64.gz
     gunzip -c ~/PivotingTools/chisel/chisel_1.11.3_linux_amd64.gz > ~/PivotingTools/chisel/chisel_1.11.3_linux_amd64
+    echo "[+] Chisel Deployed" >> ~/Report.txt
+fi
+
+#===============================================================================
+# Command & Control ============================================================
+#===============================================================================
+if [ ! -d ~/c2/sliver ]; then
+    mkdir -p ~/c2/sliver
+    git clone https://github.com/BishopFox/sliver.git ~/c2/sliver
+    cd ~/c2/sliver && make
+    echo "[+] Sliver Deployed" >> ~/Report.txt
 fi
 #===============================================================================
 # Passwords ====================================================================
