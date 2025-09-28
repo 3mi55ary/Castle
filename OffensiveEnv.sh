@@ -239,7 +239,13 @@ echo "[+] PowerSploit Added" >> ~/Report.txt
 if [ ! -d ~/PivotingTools/ligolo ]; then
     mkdir -p ~/PivotingTools/ligolo
     wget -P ~/PivotingTools/ligolo https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz
+    wget -P ~/PivotingTools/ligolo https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_agent_0.8.2_linux_amd64.tar.gz
+    wget -P ~/PivotingTools/ligolo https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_agent_0.8.2_windows_amd64.zip
     tar -xvzf ~/PivotingTools/ligolo/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz -C ~/PivotingTools/ligolo
+    tar -xvzf ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_linux_amd64.tar.gz -C ~/PivotingTools/ligolo
+    unzip -q ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_windows_amd64.zip -d ~/PivotingTools/ligolo
+    mkdir -p ~/PivotingTools/ligolo/storage
+    mv ~/PivotingTools/ligolo/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_linux_amd64.tar.gz ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_windows_amd64.zip ~/PivotingTools/ligolo/storage
     echo "[+] Ligolo Deployed" >> ~/Report.txt
 fi
 
@@ -257,12 +263,8 @@ fi
 #===============================================================================
 # Command & Control ============================================================
 #===============================================================================
-if [ ! -d ~/c2/sliver ]; then
-    mkdir -p ~/c2/sliver
-    git clone https://github.com/BishopFox/sliver.git ~/c2/sliver
-    cd ~/c2/sliver && make
-    echo "[+] Sliver Deployed" >> ~/Report.txt
-fi
+# Sliver Agent
+
 #===============================================================================
 # Passwords ====================================================================
 #=============================================================================== 
