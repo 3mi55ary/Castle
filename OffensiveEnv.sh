@@ -103,7 +103,7 @@ echo "[+] NXC Deployed" >> ~/Report.txt
 if [ ! -d ~/WindowsTools/bloodhound ]; then
     mkdir -p ~/WindowsTools/bloodhound
     sudo curl -L https://ghst.ly/getbhce -o ~/WindowsTools/bloodhound/docker-compose.yml
-    sudo docker-compose -f docker-compose.yml up -d
+    sudo docker-compose -f ~/WindowsTools/bloodhound/docker-compose.yml up -d
     echo "sudo docker-compose -f docker-compose.yml up -d" > ~/WindowsTools/bloodhound/Deploy.sh
     chmod +x ~/WindowsTools/bloodhound/Deploy.sh
     until curl -sfI http://localhost:8080/ui >/dev/null; do
