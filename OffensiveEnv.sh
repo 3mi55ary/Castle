@@ -254,6 +254,7 @@ if [ ! -d ~/PivotingTools/ligolo ]; then
     unzip -q ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_windows_amd64.zip -d ~/PivotingTools/ligolo
     mkdir -p ~/PivotingTools/ligolo/storage
     mv ~/PivotingTools/ligolo/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_linux_amd64.tar.gz ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_windows_amd64.zip ~/PivotingTools/ligolo/storage
+    mv ~/Castle/LigoloNXC.sh ~/PivotingTools/ligolo
     echo "[+] Ligolo Deployed" >> ~/Report.txt
 fi
 
