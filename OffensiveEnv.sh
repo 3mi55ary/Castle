@@ -4,7 +4,7 @@
 # DESCRIPTION   : Builds an offensive toolkit tailored to Windows
 # AUTHOR        : 3mi55ary
 # DATE          : 2025-08-28
-# VERSION       : 2.3
+# VERSION       : Lost Count
 # USAGE         : sudo ./OffensiveEnv.sh
 # NOTES         : Tested on Latest Release of Kali Linux
 #===============================================================================
