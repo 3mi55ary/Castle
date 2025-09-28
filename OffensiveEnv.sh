@@ -111,8 +111,10 @@ if [ ! -d ~/WindowsTools/bloodhound ]; then
     done
     sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:"
     sudo docker logs $(uname -n)-bloodhound-1 2>&1 | grep "Initial Password Set To:"
+    sudo docker logs bloodhound-bloodhound-1 2>&1 | grep "Initial Password Set To:"
     sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
     sudo docker logs $(uname -n)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
+    sudo docker logs bloodhound-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
     echo "[+] Bloodhound-CE Deployed" >> ~/Report.txt
 fi
 
