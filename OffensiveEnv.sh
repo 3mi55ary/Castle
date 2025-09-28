@@ -100,15 +100,21 @@ uv tool install git+https://github.com/Pennyw0rth/NetExec.git
 echo "[+] NXC Deployed" >> ~/Report.txt
 
 # BloodHound-CE
-sudo curl -L https://ghst.ly/getbhce | sudo docker-compose -f - up -d
-until curl -sfI http://localhost:8080/ui >/dev/null; do
-    sleep 5
-done
-sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:"
-sudo docker logs $(uname -n)-bloodhound-1 2>&1 | grep "Initial Password Set To:"
-sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
-sudo docker logs $(uname -n)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
-echo "[+] Bloodhound-CE Deployed" >> ~/Report.txt
+if [ ! -d ~/WindowsTools/bloodhound ]; then
+    mkdir -p ~/WindowsTools/bloodhound
+    sudo curl -L https://ghst.ly/getbhce -o ~/WindowsTools/bloodhound/docker-compose.yml
+    sudo docker-compose -f docker-compose.yml up -d
+    echo "sudo docker-compose -f docker-compose.yml up -d" > ~/WindowsTools/bloodhound/Deploy.sh
+    chmod +x ~/WindowsTools/bloodhound/Deploy.sh
+    until curl -sfI http://localhost:8080/ui >/dev/null; do
+        sleep 5
+    done
+    sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:"
+    sudo docker logs $(uname -n)-bloodhound-1 2>&1 | grep "Initial Password Set To:"
+    sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
+    sudo docker logs $(uname -n)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
+    echo "[+] Bloodhound-CE Deployed" >> ~/Report.txt
+fi
 
 # Bloodhound-CE Ingestor (Python Based)
 uv tool install git+https://github.com/dirkjanm/BloodHound.py@bloodhound-ce
