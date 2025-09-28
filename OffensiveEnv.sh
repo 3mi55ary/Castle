@@ -118,7 +118,7 @@ if [ ! -d ~/WindowsTools/bloodhound ]; then
     echo "[+] Bloodhound-CE Deployed" >> ~/Report.txt
 fi
 
-# Bloodhound-CE Ingestor (Python Based)
+# Bloodhound-CE Ingestor (Python Based) (bloodhound-ce-python -c All -d yourdomain.local -u username -p password -ns dnsserver)
 uv tool install git+https://github.com/dirkjanm/BloodHound.py@bloodhound-ce
 echo "[+] Bloodhound-CE Ingestor Deployed" >> ~/Report.txt
 
