@@ -255,10 +255,10 @@ fi
 # Privilege Escelation (Transfer to Compromised Host) ==========================
 #===============================================================================
 if [ ! -d ~/PrivEsc ]; then
-    # Seatbelt https://github.com/GhostPack/Seatbelt
+    # Seatbelt https://github.com/GhostPack/Seatbelt (https://github.com/r3motecontrol/Ghostpack-CompiledBinaries)
     # winPEAS https://github.com/peass-ng/PEASS-ng/tree/master/winPEAS
     # PowerUp https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Privesc/PowerUp.ps1 
-    # SharpUp https://github.com/GhostPack/SharpUp
+    # SharpUp https://github.com/GhostPack/SharpUp (https://github.com/r3motecontrol/Ghostpack-CompiledBinaries)
     # JAWS https://github.com/411Hall/JAWS
     # SessionGopher https://github.com/Arvanaghi/SessionGopher
     # Watson https://github.com/rasta-mouse/Watson
