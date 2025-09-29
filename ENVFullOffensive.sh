@@ -311,11 +311,13 @@ if [ ! -d ~/Monitoring ]; then
     git clone https://github.com/muesli/duf.git ~/Monitoring/duf
     go build -C ~/Monitoring/duf
     sudo cp ~/Monitoring/duf/duf /usr/local/bin/duf
+    echo "[+] DUF Deployed" >> ~/Report.txt
 
     # btop
     mkdir -p ~/Monitoring/btop
     wget -qO ~/Monitoring/btop/btop.tbz https://github.com/aristocratos/btop/releases/download/v1.4.5/btop-x86_64-linux-musl.tbz
     sudo tar xf ~/Monitoring/btop/btop.tbz --strip-components=2 -C /usr/local ./btop/bin/btop
+    echo "[+] Btop Deployed" >> ~/Report.txt
 fi
 
 # Finishing Print Statement
