@@ -206,6 +206,10 @@ sudo ln -s ~/WindowsTools/dswalk/ds_walk.py /usr/local/bin/ds_walk.py
 sudo ln -s ~/WindowsTools/dswalk/dsstore.py /usr/local/bin/dsstore.py
 echo "[+] DS_Walk Deployed" >> ~/Report.txt
 
+#===============================================================================
+# WINDOWS TOOLING (Transfer to Compromised Host) ===============================
+#===============================================================================
+
 # mimikatz
 mkdir -p ~/WindowsTools/mimikatz
 git clone https://github.com/ParrotSec/mimikatz.git ~/WindowsTools/mimikatz
@@ -216,18 +220,10 @@ mkdir -p ~/WindowsTools/inveigh
 git clone https://github.com/Kevin-Robertson/Inveigh.git ~/WindowsTools/inveigh
 echo "[+] Inveigh Added" >> ~/Report.txt
 
-# powersploit (RECON -> Upload PowerView.ps1)
+# powersploit (RECON -> Then Upload PowerView.ps1)
 mkdir -p ~/WindowsTools/powersploit
 git clone https://github.com/PowerShellMafia/PowerSploit.git ~/WindowsTools/powersploit
 echo "[+] PowerSploit Added" >> ~/Report.txt
-
-# Rusthound (Gives Broken Data When Ingested Into Bloodhound-CE)
-# curl https://sh.rustup.rs -sSf | sh -s -- -y
-# source "$HOME/.cargo/env"
-# cargo install rusthound-ce
-# export PATH="$HOME/.cargo/bin:$PATH"
-# echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.zshrc
-# echo "[+] Rusthound Deployed" >> ~/Report.txt
 
 # UNTESTED TOOLING -------------------------------------------------------------------------------------------------------
 
@@ -244,7 +240,7 @@ echo "[+] PowerSploit Added" >> ~/Report.txt
 # PIVOTING TOOLING =============================================================
 #===============================================================================
 # ligolo
-if [ ! -d ~/PivotingTools/ligolo ]; then
+if [ ! -d ~/PivotingTools ]; then
     mkdir -p ~/PivotingTools/ligolo
     wget -P ~/PivotingTools/ligolo https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz
     wget -P ~/PivotingTools/ligolo https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_agent_0.8.2_linux_amd64.tar.gz
@@ -256,10 +252,8 @@ if [ ! -d ~/PivotingTools/ligolo ]; then
     mv ~/PivotingTools/ligolo/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_linux_amd64.tar.gz ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_windows_amd64.zip ~/PivotingTools/ligolo/storage
     mv ~/Castle/LigoloNXC.sh ~/PivotingTools/ligolo
     echo "[+] Ligolo Deployed" >> ~/Report.txt
-fi
 
-# chisel
-if [ ! -d ~/PivotingTools/chisel ]; then
+    # chisel
     mkdir -p ~/PivotingTools/chisel
     curl https://i.jpillora.com/chisel! | bash
     wget -P ~/PivotingTools/chisel https://github.com/jpillora/chisel/releases/download/v1.11.3/chisel_1.11.3_windows_amd64.zip
@@ -268,6 +262,19 @@ if [ ! -d ~/PivotingTools/chisel ]; then
     gunzip -c ~/PivotingTools/chisel/chisel_1.11.3_linux_amd64.gz > ~/PivotingTools/chisel/chisel_1.11.3_linux_amd64
     echo "[+] Chisel Deployed" >> ~/Report.txt
 fi
+#===============================================================================
+# Privilege Escelation (Transfer to Compromised Host) ==========================
+#===============================================================================
+# Seatbelt https://github.com/GhostPack/Seatbelt
+# winPEAS https://github.com/peass-ng/PEASS-ng/tree/master/winPEAS
+# PowerUp https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Privesc/PowerUp.ps1 
+# SharpUp https://github.com/GhostPack/SharpUp
+# JAWS https://github.com/411Hall/JAWS
+# SessionGopher https://github.com/Arvanaghi/SessionGopher
+# Watson https://github.com/rasta-mouse/Watson
+# LaZagne https://github.com/AlessandroZ/LaZagne
+# Windows Exploit Suggester - Next Generation (WES-NG) https://github.com/bitsadmin/wesng
+# Sysinternals https://learn.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite
 
 #===============================================================================
 # Command & Control ============================================================
