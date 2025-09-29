@@ -1,6 +1,6 @@
 #!/bin/bash
 #===============================================================================
-# SCRIPT NAME   : OffensiveEnv.sh
+# SCRIPT NAME   : FullOffensiveEnv.sh
 # DESCRIPTION   : Builds an offensive toolkit tailored to Windows
 # AUTHOR        : 3mi55ary
 # DATE          : 2025-08-28
