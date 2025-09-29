@@ -6,7 +6,7 @@
 # DATE          : 2025-08-28
 # VERSION       : Lost Count
 # USAGE         : sudo ./OffensiveEnv.sh
-# NOTES         : Tested on Latest Release of Kali Linux
+# NOTES         : Must run "git clone" from "~/"!!!  Tested on Latest Release of Kali Linux.
 #===============================================================================
 # Create Report
 echo "[+] Report Created" > ~/Report.txt
