@@ -53,7 +53,7 @@ echo "[+] Docker installation complete. Log out/in or run 'newgrp docker' to use
 echo "[+] Docker Deployed" >> ~/Report.txt
 
 #===============================================================================
-# System Basics ================================================================ -- TESTED
+# System Basics ================================================================
 #===============================================================================
 # Updates Kali GPG keyring
 sudo wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/kali-archive-keyring.gpg
@@ -76,20 +76,6 @@ if ! command -v go &>/dev/null; then
     sudo apt install -y golang-go
 fi
 echo "[+] Golang Installed" >> ~/Report.txt
-
-#===============================================================================
-# Screenshots / Captures =======================================================
-#===============================================================================
-# Install and Configure Flameshot for Instant Usage
-sudo apt install -y flameshot
-flameshot &
-echo "[+] Flameshot Deployed" >> ~/Report.txt
-
-# Set XFCE's default screenshot save path (BACKUP)
-xfconf-query -c xfce4-screenshooter \
-    -p /last-save-location \
-    -s "$HOME/Captures"
-echo "[+] XFCE Default Path Changed" >> ~/Report.txt
 
 #===============================================================================
 # WINDOWS TOOLING ==============================================================
@@ -206,6 +192,17 @@ sudo ln -s ~/WindowsTools/dswalk/ds_walk.py /usr/local/bin/ds_walk.py
 sudo ln -s ~/WindowsTools/dswalk/dsstore.py /usr/local/bin/dsstore.py
 echo "[+] DS_Walk Deployed" >> ~/Report.txt
 
+# UNTESTED TOOLING -------------------------------------------------------------------------------------------------------
+
+# targetedkerberoast (Abuses ACLs to Add an SPN and Kerberoast)
+# https://github.com/ShutdownRepo/targetedKerberoast
+#uv tool install git+https://github.com/ShutdownRepo/targetedKerberoast.git # ERRORS HERE
+#echo "[+] TargetedKerberoast Deployed" >> ~/Report.txt
+
+# https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS14-068/pykek
+#uv tool install git+https://github.com/mubix/pykek.git # ERRORS HERE
+#echo "[+] pykek Deployed" >> ~/Report.txt
+
 #===============================================================================
 # WINDOWS TOOLING (Transfer to Compromised Host) ===============================
 #===============================================================================
@@ -224,17 +221,6 @@ echo "[+] Inveigh Added" >> ~/Report.txt
 mkdir -p ~/WindowsTools/powersploit
 git clone https://github.com/PowerShellMafia/PowerSploit.git ~/WindowsTools/powersploit
 echo "[+] PowerSploit Added" >> ~/Report.txt
-
-# UNTESTED TOOLING -------------------------------------------------------------------------------------------------------
-
-# targetedkerberoast (Abuses ACLs to Add an SPN and Kerberoast)
-# https://github.com/ShutdownRepo/targetedKerberoast
-#uv tool install git+https://github.com/ShutdownRepo/targetedKerberoast.git # ERRORS HERE
-#echo "[+] TargetedKerberoast Deployed" >> ~/Report.txt
-
-# https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS14-068/pykek
-#uv tool install git+https://github.com/mubix/pykek.git # ERRORS HERE
-#echo "[+] pykek Deployed" >> ~/Report.txt
 
 #===============================================================================
 # PIVOTING TOOLING =============================================================
@@ -262,6 +248,7 @@ if [ ! -d ~/PivotingTools ]; then
     gunzip -c ~/PivotingTools/chisel/chisel_1.11.3_linux_amd64.gz > ~/PivotingTools/chisel/chisel_1.11.3_linux_amd64
     echo "[+] Chisel Deployed" >> ~/Report.txt
 fi
+
 #===============================================================================
 # Privilege Escelation (Transfer to Compromised Host) ==========================
 #===============================================================================
@@ -288,6 +275,20 @@ fi
 # seclists
 # rockyou extract
 # https://github.com/insidetrust/statistically-likely-usernames
+
+#===============================================================================
+# Screenshots / Captures =======================================================
+#===============================================================================
+# Install and Configure Flameshot for Instant Usage
+sudo apt install -y flameshot
+flameshot &
+echo "[+] Flameshot Deployed" >> ~/Report.txt
+
+# Set XFCE's default screenshot save path (BACKUP)
+xfconf-query -c xfce4-screenshooter \
+    -p /last-save-location \
+    -s "$HOME/Captures"
+echo "[+] XFCE Default Path Changed" >> ~/Report.txt
 
 #===============================================================================
 # System Monitoring ============================================================
