@@ -59,10 +59,6 @@ echo "[+] Docker Deployed" >> ~/Report.txt
 sudo wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/kali-archive-keyring.gpg
 echo "[+] GPG Keyring Updated" >> ~/Report.txt
 
-# Create Base Staging Areas
-mkdir -p ~/Captures ~/WindowsTools ~/PivotingTools ~/Monitoring ~/Loot
-echo "[+] Staging Areas Created" >> ~/Report.txt
-
 # Install UV
 export PATH="$HOME/.local/bin:$PATH"
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
@@ -81,152 +77,157 @@ echo "[+] Golang Installed" >> ~/Report.txt
 # WINDOWS TOOLING ==============================================================
 #===============================================================================
 # https://wadcoms.github.io/
-# NetExec
-uv tool install git+https://github.com/Pennyw0rth/NetExec.git
-echo "[+] NXC Deployed" >> ~/Report.txt
-
-# BloodHound-CE
-if [ ! -d ~/WindowsTools/bloodhound ]; then
-    mkdir -p ~/WindowsTools/bloodhound
-    sudo curl -L https://ghst.ly/getbhce -o ~/WindowsTools/bloodhound/docker-compose.yml
-    sudo docker-compose -f ~/WindowsTools/bloodhound/docker-compose.yml up -d
-    echo "sudo docker-compose -f docker-compose.yml up -d" > ~/WindowsTools/bloodhound/Deploy.sh
-    chmod +x ~/WindowsTools/bloodhound/Deploy.sh
-    until curl -sfI http://localhost:8080/ui >/dev/null; do
-        sleep 5
-    done
-    sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:"
-    sudo docker logs $(uname -n)-bloodhound-1 2>&1 | grep "Initial Password Set To:"
-    sudo docker logs bloodhound-bloodhound-1 2>&1 | grep "Initial Password Set To:"
-    sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
-    sudo docker logs $(uname -n)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
-    sudo docker logs bloodhound-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
-    echo "[+] Bloodhound-CE Deployed" >> ~/Report.txt
+if [ ! -d ~/WindowsTools ]; then   
+    # NetExec
+    uv tool install git+https://github.com/Pennyw0rth/NetExec.git
+    echo "[+] NXC Deployed" >> ~/Report.txt
+    
+    # BloodHound-CE
+    if [ ! -d ~/WindowsTools/bloodhound ]; then
+        mkdir -p ~/WindowsTools/bloodhound
+        sudo curl -L https://ghst.ly/getbhce -o ~/WindowsTools/bloodhound/docker-compose.yml
+        sudo docker-compose -f ~/WindowsTools/bloodhound/docker-compose.yml up -d
+        echo "sudo docker-compose -f docker-compose.yml up -d" > ~/WindowsTools/bloodhound/Deploy.sh
+        chmod +x ~/WindowsTools/bloodhound/Deploy.sh
+        until curl -sfI http://localhost:8080/ui >/dev/null; do
+            sleep 5
+        done
+        sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:"
+        sudo docker logs $(uname -n)-bloodhound-1 2>&1 | grep "Initial Password Set To:"
+        sudo docker logs bloodhound-bloodhound-1 2>&1 | grep "Initial Password Set To:"
+        sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
+        sudo docker logs $(uname -n)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
+        sudo docker logs bloodhound-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
+        mv ~/Castle/RedeployBloodhound.sh ~/WindowsTools/bloodhound
+        sudo chmod +x ~/WindowsTools/bloodhound/RedeployBloodhound.sh
+        echo "[+] Bloodhound-CE Deployed" >> ~/Report.txt
+    fi
+    
+    # Bloodhound-CE Ingestor (Python Based) (bloodhound-ce-python -c All -d yourdomain.local -u username -p password -ns dnsserver)
+    uv tool install git+https://github.com/dirkjanm/BloodHound.py@bloodhound-ce
+    echo "[+] Bloodhound-CE Ingestor Deployed" >> ~/Report.txt
+    
+    # Impacket
+    uv tool install git+https://github.com/fortra/impacket.git
+    echo "[+] Impacket Deployed" >> ~/Report.txt
+    
+    # ldapdomaindump (sudo python3 ldapdomaindump.py ldap://DC -u 'DOMAIN\user' -p 'Password')
+    uv tool install git+https://github.com/dirkjanm/ldapdomaindump.git
+    echo "[+] ldapdomaindump Deployed" >> ~/Report.txt
+    
+    # BloodyAD
+    uv tool install git+https://github.com/CravateRouge/bloodyAD.git
+    echo "[+] BloodyAD Deployed" >> ~/Report.txt
+    
+    # Certipy-AD
+    uv tool install git+https://github.com/ly4k/Certipy.git
+    echo "[+] Certipy Deployed" >> ~/Report.txt
+    
+    # Evil-WinRM
+    sudo apt install -y ruby ruby-dev libkrb5-dev
+    sudo gem install evil-winrm
+    echo "[+] Evil-WinRM Deployed" >> ~/Report.txt
+    
+    # Evil-WinRM-py
+    uv tool install git+https://github.com/adityatelange/evil-winrm-py.git
+    echo "[+] Evil-WinRM-py Deployed" >> ~/Report.txt
+    
+    # enum4linux
+    uv tool install git+https://github.com/cddmp/enum4linux-ng.git
+    echo "[+] enum4linux Deployed" >> ~/Report.txt
+    
+    # ldapsearch
+    sudo apt install -y ldap-utils
+    echo "[+] ldapsearch Deployed" >> ~/Report.txt
+    
+    # smbmap
+    uv tool install git+https://github.com/ShawnDEvans/smbmap.git
+    echo "[+] smbmap Deployed" >> ~/Report.txt
+    
+    # responder
+    mkdir -p ~/WindowsTools/responder
+    git clone https://github.com/lgandx/Responder.git ~/WindowsTools/responder
+    sudo ln -s ~/WindowsTools/responder/Responder.py /usr/local/bin/responder2
+    echo "[+] Responder Deployed" >> ~/Report.txt
+    
+    # kerbrute (sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt | Create users list from ldapdomaindump | Hashcat mode 18200)
+    if ! command -v kerbrute &>/dev/null; then
+        mkdir -p ~/WindowsTools/kerbrute
+        git clone https://github.com/ropnop/kerbrute.git ~/WindowsTools/kerbrute
+        sudo make -C ~/WindowsTools/kerbrute all
+        sudo ln -sf ~/WindowsTools/kerbrute/dist/kerbrute_linux_amd64 /usr/local/bin/kerbrute
+        echo "[+] Kerbrute Deployed" >> ~/Report.txt
+    fi
+    
+    # windapsearch
+    if ! command -v windapsearch &>/dev/null; then
+        mkdir -p ~/WindowsTools/windapsearch
+        git clone https://github.com/ropnop/go-windapsearch.git ~/WindowsTools/windapsearch
+        cd ~/WindowsTools/windapsearch && go build ./cmd/windapsearch
+        sudo ln -sf "$(pwd)/windapsearch" /usr/local/bin/windapsearch
+        echo "[+] windapsearch Deployed" >> ~/Report.txt
+    fi
+    
+    # shortscan
+    if ! command -v shortscan &>/dev/null; then
+        mkdir -p ~/WindowsTools/shortscan
+        git clone https://github.com/bitquark/shortscan.git ~/WindowsTools/shortscan
+        cd ~/WindowsTools/shortscan/cmd/shortscan && go build
+        sudo ln -sf "$(pwd)/shortscan" /usr/local/bin/shortscan
+        echo "[+] shortscan Deployed" >> ~/Report.txt
+    fi
+    
+    # krbrelayx
+    git clone https://github.com/dirkjanm/krbrelayx.git ~/WindowsTools/krbrelayx
+    sudo ln -s ~/WindowsTools/krbrelayx/krbrelayx.py /usr/local/bin/krbrelayx.py
+    sudo ln -s ~/WindowsTools/krbrelayx/dnstool.py /usr/local/bin/dnstool.py
+    sudo ln -s ~/WindowsTools/krbrelayx/addspn.py /usr/local/bin/addspn.py
+    sudo ln -s ~/WindowsTools/krbrelayx/printerbug.py /usr/local/bin/printerbug.py
+    
+    # ds_walk
+    mkdir -p ~/WindowsTools/dswalk
+    git clone https://github.com/Keramas/DS_Walk.git ~/WindowsTools/dswalk
+    sudo ln -s ~/WindowsTools/dswalk/ds_walk.py /usr/local/bin/ds_walk.py
+    sudo ln -s ~/WindowsTools/dswalk/dsstore.py /usr/local/bin/dsstore.py
+    echo "[+] DS_Walk Deployed" >> ~/Report.txt
+    
+    # UNTESTED TOOLING -------------------------------------------------------------------------------------------------------
+    
+    # targetedkerberoast (Abuses ACLs to Add an SPN and Kerberoast)
+    # https://github.com/ShutdownRepo/targetedKerberoast
+    #uv tool install git+https://github.com/ShutdownRepo/targetedKerberoast.git # ERRORS HERE
+    #echo "[+] TargetedKerberoast Deployed" >> ~/Report.txt
+    
+    # https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS14-068/pykek
+    #uv tool install git+https://github.com/mubix/pykek.git # ERRORS HERE
+    #echo "[+] pykek Deployed" >> ~/Report.txt
 fi
-
-# Bloodhound-CE Ingestor (Python Based) (bloodhound-ce-python -c All -d yourdomain.local -u username -p password -ns dnsserver)
-uv tool install git+https://github.com/dirkjanm/BloodHound.py@bloodhound-ce
-echo "[+] Bloodhound-CE Ingestor Deployed" >> ~/Report.txt
-
-# Impacket
-uv tool install git+https://github.com/fortra/impacket.git
-echo "[+] Impacket Deployed" >> ~/Report.txt
-
-# ldapdomaindump (sudo python3 ldapdomaindump.py ldap://DC -u 'DOMAIN\user' -p 'Password')
-uv tool install git+https://github.com/dirkjanm/ldapdomaindump.git
-echo "[+] ldapdomaindump Deployed" >> ~/Report.txt
-
-# BloodyAD
-uv tool install git+https://github.com/CravateRouge/bloodyAD.git
-echo "[+] BloodyAD Deployed" >> ~/Report.txt
-
-# Certipy-AD
-uv tool install git+https://github.com/ly4k/Certipy.git
-echo "[+] Certipy Deployed" >> ~/Report.txt
-
-# Evil-WinRM
-sudo apt install -y ruby ruby-dev libkrb5-dev
-sudo gem install evil-winrm
-echo "[+] Evil-WinRM Deployed" >> ~/Report.txt
-
-# Evil-WinRM-py
-uv tool install git+https://github.com/adityatelange/evil-winrm-py.git
-echo "[+] Evil-WinRM-py Deployed" >> ~/Report.txt
-
-# enum4linux
-uv tool install git+https://github.com/cddmp/enum4linux-ng.git
-echo "[+] enum4linux Deployed" >> ~/Report.txt
-
-# ldapsearch
-sudo apt install -y ldap-utils
-echo "[+] ldapsearch Deployed" >> ~/Report.txt
-
-# smbmap
-uv tool install git+https://github.com/ShawnDEvans/smbmap.git
-echo "[+] smbmap Deployed" >> ~/Report.txt
-
-# responder
-mkdir -p ~/WindowsTools/responder
-git clone https://github.com/lgandx/Responder.git ~/WindowsTools/responder
-sudo ln -s ~/WindowsTools/responder/Responder.py /usr/local/bin/responder2
-echo "[+] Responder Deployed" >> ~/Report.txt
-
-# kerbrute (sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt | Create users list from ldapdomaindump | Hashcat mode 18200)
-if ! command -v kerbrute &>/dev/null; then
-    mkdir -p ~/WindowsTools/kerbrute
-    git clone https://github.com/ropnop/kerbrute.git ~/WindowsTools/kerbrute
-    sudo make -C ~/WindowsTools/kerbrute all
-    sudo ln -sf ~/WindowsTools/kerbrute/dist/kerbrute_linux_amd64 /usr/local/bin/kerbrute
-    echo "[+] Kerbrute Deployed" >> ~/Report.txt
-fi
-
-# windapsearch
-if ! command -v windapsearch &>/dev/null; then
-    mkdir -p ~/WindowsTools/windapsearch
-    git clone https://github.com/ropnop/go-windapsearch.git ~/WindowsTools/windapsearch
-    cd ~/WindowsTools/windapsearch && go build ./cmd/windapsearch
-    sudo ln -sf "$(pwd)/windapsearch" /usr/local/bin/windapsearch
-    echo "[+] windapsearch Deployed" >> ~/Report.txt
-fi
-
-# shortscan
-if ! command -v shortscan &>/dev/null; then
-    mkdir -p ~/WindowsTools/shortscan
-    git clone https://github.com/bitquark/shortscan.git ~/WindowsTools/shortscan
-    cd ~/WindowsTools/shortscan/cmd/shortscan && go build
-    sudo ln -sf "$(pwd)/shortscan" /usr/local/bin/shortscan
-    echo "[+] shortscan Deployed" >> ~/Report.txt
-fi
-
-# krbrelayx
-git clone https://github.com/dirkjanm/krbrelayx.git ~/WindowsTools/krbrelayx
-sudo ln -s ~/WindowsTools/krbrelayx/krbrelayx.py /usr/local/bin/krbrelayx.py
-sudo ln -s ~/WindowsTools/krbrelayx/dnstool.py /usr/local/bin/dnstool.py
-sudo ln -s ~/WindowsTools/krbrelayx/addspn.py /usr/local/bin/addspn.py
-sudo ln -s ~/WindowsTools/krbrelayx/printerbug.py /usr/local/bin/printerbug.py
-
-# ds_walk
-mkdir -p ~/WindowsTools/dswalk
-git clone https://github.com/Keramas/DS_Walk.git ~/WindowsTools/dswalk
-sudo ln -s ~/WindowsTools/dswalk/ds_walk.py /usr/local/bin/ds_walk.py
-sudo ln -s ~/WindowsTools/dswalk/dsstore.py /usr/local/bin/dsstore.py
-echo "[+] DS_Walk Deployed" >> ~/Report.txt
-
-# UNTESTED TOOLING -------------------------------------------------------------------------------------------------------
-
-# targetedkerberoast (Abuses ACLs to Add an SPN and Kerberoast)
-# https://github.com/ShutdownRepo/targetedKerberoast
-#uv tool install git+https://github.com/ShutdownRepo/targetedKerberoast.git # ERRORS HERE
-#echo "[+] TargetedKerberoast Deployed" >> ~/Report.txt
-
-# https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS14-068/pykek
-#uv tool install git+https://github.com/mubix/pykek.git # ERRORS HERE
-#echo "[+] pykek Deployed" >> ~/Report.txt
 
 #===============================================================================
 # WINDOWS TOOLING (Transfer to Compromised Host) ===============================
 #===============================================================================
-
-# mimikatz
-mkdir -p ~/WindowsTools/mimikatz
-git clone https://github.com/ParrotSec/mimikatz.git ~/WindowsTools/mimikatz
-echo "[+] Mimikatz Added" >> ~/Report.txt
-
-# inveigh
-mkdir -p ~/WindowsTools/inveigh
-git clone https://github.com/Kevin-Robertson/Inveigh.git ~/WindowsTools/inveigh
-echo "[+] Inveigh Added" >> ~/Report.txt
-
-# powersploit (RECON -> Then Upload PowerView.ps1)
-mkdir -p ~/WindowsTools/powersploit
-git clone https://github.com/PowerShellMafia/PowerSploit.git ~/WindowsTools/powersploit
-echo "[+] PowerSploit Added" >> ~/Report.txt
+if [ ! -d ~/WindowsNative ]; then
+    # mimikatz
+    mkdir -p ~/WindowsNative/mimikatz
+    git clone https://github.com/ParrotSec/mimikatz.git ~/WindowsNative/mimikatz
+    echo "[+] Mimikatz Added" >> ~/Report.txt
+    
+    # inveigh
+    mkdir -p ~/WindowsNative/inveigh
+    git clone https://github.com/Kevin-Robertson/Inveigh.git ~/WindowsNative/inveigh
+    echo "[+] Inveigh Added" >> ~/Report.txt
+    
+    # powersploit (RECON -> Then Upload PowerView.ps1)
+    mkdir -p ~/WindowsNative/powersploit
+    git clone https://github.com/PowerShellMafia/PowerSploit.git ~/WindowsNative/powersploit
+    echo "[+] PowerSploit Added" >> ~/Report.txt
+fi
 
 #===============================================================================
 # PIVOTING TOOLING =============================================================
 #===============================================================================
-# ligolo
 if [ ! -d ~/PivotingTools ]; then
+    # ligolo
     mkdir -p ~/PivotingTools/ligolo
     wget -P ~/PivotingTools/ligolo https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz
     wget -P ~/PivotingTools/ligolo https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_agent_0.8.2_linux_amd64.tar.gz
@@ -237,6 +238,7 @@ if [ ! -d ~/PivotingTools ]; then
     mkdir -p ~/PivotingTools/ligolo/storage
     mv ~/PivotingTools/ligolo/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_linux_amd64.tar.gz ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_windows_amd64.zip ~/PivotingTools/ligolo/storage
     mv ~/Castle/LigoloNXC.sh ~/PivotingTools/ligolo
+    sudo chmod +x ~/PivotingTools/ligolo/LigoloNXC.sh
     echo "[+] Ligolo Deployed" >> ~/Report.txt
 
     # chisel
@@ -252,44 +254,54 @@ fi
 #===============================================================================
 # Privilege Escelation (Transfer to Compromised Host) ==========================
 #===============================================================================
-# Seatbelt https://github.com/GhostPack/Seatbelt
-# winPEAS https://github.com/peass-ng/PEASS-ng/tree/master/winPEAS
-# PowerUp https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Privesc/PowerUp.ps1 
-# SharpUp https://github.com/GhostPack/SharpUp
-# JAWS https://github.com/411Hall/JAWS
-# SessionGopher https://github.com/Arvanaghi/SessionGopher
-# Watson https://github.com/rasta-mouse/Watson
-# LaZagne https://github.com/AlessandroZ/LaZagne
-# Windows Exploit Suggester - Next Generation (WES-NG) https://github.com/bitsadmin/wesng
-# Sysinternals https://learn.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite
+if [ ! -d ~/PrivEsc ]; then
+    # Seatbelt https://github.com/GhostPack/Seatbelt
+    # winPEAS https://github.com/peass-ng/PEASS-ng/tree/master/winPEAS
+    # PowerUp https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Privesc/PowerUp.ps1 
+    # SharpUp https://github.com/GhostPack/SharpUp
+    # JAWS https://github.com/411Hall/JAWS
+    # SessionGopher https://github.com/Arvanaghi/SessionGopher
+    # Watson https://github.com/rasta-mouse/Watson
+    # LaZagne https://github.com/AlessandroZ/LaZagne
+    # Windows Exploit Suggester - Next Generation (WES-NG) https://github.com/bitsadmin/wesng
+    # Sysinternals https://learn.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite
+fi
 
 #===============================================================================
 # Command & Control ============================================================
 #===============================================================================
-# Sliver Agent
+if [ ! -d ~/C2 ]; then
+    # Sliver Agent
+fi
 
 #===============================================================================
 # Passwords ====================================================================
 #=============================================================================== 
-# hashcat
-# seclists
-# rockyou extract
-# https://github.com/insidetrust/statistically-likely-usernames
+if [ ! -d ~/Passwords ]; then
+    # hashcat
+    # seclists
+    # rockyou extract
+    # https://github.com/insidetrust/statistically-likely-usernames
+fi
 
 #===============================================================================
 # Screenshots / Captures =======================================================
 #===============================================================================
-# Install and Configure Flameshot for Instant Usage
-sudo apt install -y flameshot
-flameshot &
-echo "[+] Flameshot Deployed" >> ~/Report.txt
-
-# Set XFCE's default screenshot save path (BACKUP)
-xfconf-query -c xfce4-screenshooter \
-    -p /last-save-location \
-    -s "$HOME/Captures"
-echo "[+] XFCE Default Path Changed" >> ~/Report.txt
-
+if [ ! -d ~/Captures ]; then
+    # Create Staging Area
+    mkdir -p ~/Captures
+    
+    # Install and Configure Flameshot for Instant Usage
+    sudo apt install -y flameshot
+    flameshot &
+    echo "[+] Flameshot Deployed" >> ~/Report.txt
+    
+    # Set XFCE's default screenshot save path (BACKUP)
+    xfconf-query -c xfce4-screenshooter \
+        -p /last-save-location \
+        -s "$HOME/Captures"
+    echo "[+] XFCE Default Path Changed" >> ~/Report.txt
+fi
 #===============================================================================
 # System Monitoring ============================================================
 #===============================================================================
@@ -298,21 +310,6 @@ mkdir ~/Monitoring/duf
 git clone https://github.com/muesli/duf.git ~/Monitoring/duf
 go build -C ~/Monitoring/duf
 sudo cp ~/Monitoring/duf/duf /usr/local/bin/duf
-
-#===============================================================================
-# CUSTOMIZING ==================================================================
-#===============================================================================
-# Change Wallpaper (COMES LAST - SHOWS SYSTEM IS READY)
-read -p "Change Wallpaper? [y/N]: " ans
-if [[ "$ans" =~ ^[Yy]$ ]]; then
-    xfconf-query -c xfce4-desktop \
-        -p /backdrop/screen0/monitor0/image-path \
-        -s "$(wget -O /tmp/remote_wallpaper.png https://wallhere.com/es/wallpaper/1837777 && echo /tmp/remote_wallpaper.png)"
-
-    xfconf-query -c xfce4-desktop \
-        -p /backdrop/screen0/monitor0/image-show \
-        -s true
-fi
 
 # Finishing Print Statement
 echo "[+] Lets Roll" >> ~/Report.txt
