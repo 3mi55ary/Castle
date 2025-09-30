@@ -266,6 +266,8 @@ if [ ! -d ~/PrivEsc ]; then
     # LaZagne https://github.com/AlessandroZ/LaZagne
     # Windows Exploit Suggester - Next Generation (WES-NG) https://github.com/bitsadmin/wesng
     # Sysinternals https://learn.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite
+
+    # PrintSpoofer for SeImpersonate
 fi
 
 #===============================================================================
