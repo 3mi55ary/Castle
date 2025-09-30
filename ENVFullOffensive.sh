@@ -99,7 +99,7 @@ if [ ! -d ~/WindowsTools ]; then
         sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
         sudo docker logs $(uname -n)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
         sudo docker logs bloodhound-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
-        mv ~/Castle/RedeployBloodhound.sh ~/WindowsTools/bloodhound
+        sudo mv ~/Castle/RedeployBloodhound.sh ~/WindowsTools/bloodhound
         sudo chmod +x ~/WindowsTools/bloodhound/RedeployBloodhound.sh
         echo "[+] Bloodhound-CE Deployed" >> ~/Report.txt
     fi
@@ -237,8 +237,8 @@ if [ ! -d ~/PivotingTools ]; then
     tar -xvzf ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_linux_amd64.tar.gz -C ~/PivotingTools/ligolo
     unzip -q ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_windows_amd64.zip -d ~/PivotingTools/ligolo
     mkdir -p ~/PivotingTools/ligolo/storage
-    mv ~/PivotingTools/ligolo/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_linux_amd64.tar.gz ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_windows_amd64.zip ~/PivotingTools/ligolo/storage
-    mv ~/Castle/LigoloNXC.sh ~/PivotingTools/ligolo
+    sudo mv ~/PivotingTools/ligolo/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_linux_amd64.tar.gz ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_windows_amd64.zip ~/PivotingTools/ligolo/storage
+    sudo mv ~/Castle/LigoloNXC.sh ~/PivotingTools/ligolo
     sudo chmod +x ~/PivotingTools/ligolo/LigoloNXC.sh
     echo "[+] Ligolo Deployed" >> ~/Report.txt
 
