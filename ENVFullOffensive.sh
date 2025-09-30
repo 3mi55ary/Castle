@@ -5,8 +5,9 @@
 # AUTHOR        : 3mi55ary
 # DATE          : 2025-08-28
 # VERSION       : Lost Count
-# USAGE         : sudo ./ENVFullOffensive.sh
-# NOTES         : Must run "git clone" from "~/"!!!  Tested on Latest Release of Kali Linux.
+# USAGE         : ./ENVFullOffensive.sh
+# NOTES         : Must run "git clone" from "~/" without sudo (sudo is handled by the script when needed).
+# NOTES         : Tested on Latest Release of Kali Linux.
 #===============================================================================
 # Create Report
 echo "[+] Report Created" > ~/Report.txt
