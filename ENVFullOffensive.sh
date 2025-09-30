@@ -1,11 +1,11 @@
 #!/bin/bash
 #===============================================================================
-# SCRIPT NAME   : FullOffensiveEnv.sh
+# SCRIPT NAME   : ENVFullOffensive.sh
 # DESCRIPTION   : Builds an offensive toolkit tailored to Windows
 # AUTHOR        : 3mi55ary
 # DATE          : 2025-08-28
 # VERSION       : Lost Count
-# USAGE         : sudo ./OffensiveEnv.sh
+# USAGE         : sudo ./ENVFullOffensive.sh
 # NOTES         : Must run "git clone" from "~/"!!!  Tested on Latest Release of Kali Linux.
 #===============================================================================
 # Create Report
@@ -49,7 +49,7 @@ sudo systemctl enable --now docker
 # Add current user to docker group (requires re-login to take effect)
 sudo usermod -aG docker "$USER"
 
-echo "[+] Docker installation complete. Log out/in or run 'newgrp docker' to use without sudo."
+echo "[+] Docker installation complete. Log out/in or run 'newgrp docker' to use without sudo." >> ~/Report.txt
 echo "[+] Docker Deployed" >> ~/Report.txt
 
 #===============================================================================
@@ -64,14 +64,14 @@ export PATH="$HOME/.local/bin:$PATH"
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 if ! command -v uv &>/dev/null; then
     curl -LsSf https://astral.sh/uv/install.sh | sh
+    echo "[+] UV Installed" >> ~/Report.txt
 fi
-echo "[+] UV Installed" >> ~/Report.txt
 
 # Install Golang
 if ! command -v go &>/dev/null; then
     sudo apt install -y golang-go
+    echo "[+] Golang Installed" >> ~/Report.txt
 fi
-echo "[+] Golang Installed" >> ~/Report.txt
 
 #===============================================================================
 # WINDOWS TOOLING ==============================================================
