@@ -268,6 +268,7 @@ if [ ! -d ~/PrivEsc ]; then
     # Sysinternals https://learn.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite
 
     # PrintSpoofer for SeImpersonate
+    # Backup Operator Copy NTDS.dit https://github.com/giuliano108/SeBackupPrivilege/tree/master
 fi
 
 #===============================================================================
