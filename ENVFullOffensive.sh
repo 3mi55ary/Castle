@@ -255,7 +255,7 @@ fi
 #===============================================================================
 # Privilege Escelation (Transfer to Compromised Host) ==========================
 #===============================================================================
-if [ ! -d ~/PrivEsc ]; then
+#if [ ! -d ~/PrivEsc ]; then
     # Seatbelt https://github.com/GhostPack/Seatbelt (https://github.com/r3motecontrol/Ghostpack-CompiledBinaries)
     # winPEAS https://github.com/peass-ng/PEASS-ng/tree/master/winPEAS
     # PowerUp https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Privesc/PowerUp.ps1 
@@ -269,24 +269,24 @@ if [ ! -d ~/PrivEsc ]; then
 
     # PrintSpoofer for SeImpersonate
     # Backup Operator Copy NTDS.dit https://github.com/giuliano108/SeBackupPrivilege/tree/master
-fi
+#fi
 
 #===============================================================================
 # Command & Control ============================================================
 #===============================================================================
-if [ ! -d ~/C2 ]; then
+#if [ ! -d ~/C2 ]; then
     # Sliver Agent
-fi
+#fi
 
 #===============================================================================
 # Passwords ====================================================================
 #=============================================================================== 
-if [ ! -d ~/Passwords ]; then
+#if [ ! -d ~/Passwords ]; then
     # hashcat
     # seclists
     # rockyou extract
     # https://github.com/insidetrust/statistically-likely-usernames
-fi
+#fi
 
 #===============================================================================
 # Screenshots / Captures =======================================================
