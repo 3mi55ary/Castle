@@ -9,8 +9,15 @@
 # NOTES         : Must run "git clone" from "~/" without sudo (sudo is handled by the script when needed).
 # NOTES         : Tested on Latest Release of Kali Linux.
 #===============================================================================
+#===============================================================================
+# System Basics ================================================================
+#===============================================================================
 # Create Report
 echo "[+] Report Created" > ~/Report.txt
+
+# Updates Kali GPG keyring
+sudo wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/kali-archive-keyring.gpg
+echo "[+] GPG Keyring Updated" >> ~/Report.txt
 
 #===============================================================================
 # Docker + Compose (Official Docker Repo) (Courtesy of wi0n - https://github.com/wi0n)
@@ -54,11 +61,8 @@ echo "[+] Docker installation complete. Log out/in or run 'newgrp docker' to use
 echo "[+] Docker Deployed" >> ~/Report.txt
 
 #===============================================================================
-# System Basics ================================================================
+# Requirements =================================================================
 #===============================================================================
-# Updates Kali GPG keyring
-sudo wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/kali-archive-keyring.gpg
-echo "[+] GPG Keyring Updated" >> ~/Report.txt
 
 # Install UV
 export PATH="$HOME/.local/bin:$PATH"
@@ -222,6 +226,16 @@ if [ ! -d ~/WindowsNative ]; then
     mkdir -p ~/WindowsNative/powersploit
     git clone https://github.com/PowerShellMafia/PowerSploit.git ~/WindowsNative/powersploit
     echo "[+] PowerSploit Added" >> ~/Report.txt
+    
+    # Manual Credential Hunting
+    # echo "" >> ~/WindowsNative/CredentialHunting.txt
+    echo 'findstr /SIM /C:"password" *.txt *.ini *.cfg *.config *.xml' > ~/WindowsNative/CredentialHunting.txt
+    echo 'findstr /SI /M "password" *.xml *.ini *.txt' >> ~/WindowsNative/CredentialHunting.txt
+    echo 'findstr /si password *.xml *.ini *.txt *.config' >> ~/WindowsNative/CredentialHunting.txt
+    echo 'findstr /spin "password" *.*' >> ~/WindowsNative/CredentialHunting.txt
+    echo 'dir /S /B *pass*.txt == *pass*.xml == *pass*.ini == *cred* == *vnc* == *.config*' >> ~/WindowsNative/CredentialHunting.txt
+    echo 'where /R C:\ *.config' >> ~/WindowsNative/CredentialHunting.txt
+    echo 'foreach($user in ((ls C:\users).fullname)){cat "$user\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt" -ErrorAction SilentlyContinue}' >> ~/WindowsNative/CredentialHunting.txt
 fi
 
 #===============================================================================
@@ -266,7 +280,6 @@ fi
     # LaZagne https://github.com/AlessandroZ/LaZagne
     # Windows Exploit Suggester - Next Generation (WES-NG) https://github.com/bitsadmin/wesng
     # Sysinternals https://learn.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite
-
     # PrintSpoofer for SeImpersonate
     # Backup Operator Copy NTDS.dit https://github.com/giuliano108/SeBackupPrivilege/tree/master
 #fi
