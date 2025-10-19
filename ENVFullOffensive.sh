@@ -217,7 +217,7 @@ if [ ! -d ~/WindowsNative ]; then
     git clone https://github.com/ParrotSec/mimikatz.git ~/WindowsNative/mimikatz
     echo "[+] Mimikatz Added" >> ~/Report.txt
 
-    # mimikatz
+    # netcat
     mkdir -p ~/WindowsNative/netcat
     git clone https://github.com/int0x33/nc.exe.git ~/WindowsNative/netcat
     echo "[+] Netcat Added" >> ~/Report.txt
