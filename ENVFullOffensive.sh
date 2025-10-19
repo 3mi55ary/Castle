@@ -216,6 +216,11 @@ if [ ! -d ~/WindowsNative ]; then
     mkdir -p ~/WindowsNative/mimikatz
     git clone https://github.com/ParrotSec/mimikatz.git ~/WindowsNative/mimikatz
     echo "[+] Mimikatz Added" >> ~/Report.txt
+
+    # mimikatz
+    mkdir -p ~/WindowsNative/netcat
+    git clone https://github.com/int0x33/nc.exe.git ~/WindowsNative/netcat
+    echo "[+] Netcat Added" >> ~/Report.txt
     
     # inveigh
     mkdir -p ~/WindowsNative/inveigh
