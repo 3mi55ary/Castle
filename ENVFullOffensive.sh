@@ -140,6 +140,10 @@ if [ ! -d ~/WindowsTools ]; then
     # enum4linux
     uv tool install git+https://github.com/cddmp/enum4linux-ng.git
     echo "[+] enum4linux Deployed" >> ~/Report.txt
+
+    # pyWhisker
+    uv tool install git+https://github.com/ShutdownRepo/pywhisker.git
+    echo "[+] pyWhisker Deployed" >> ~/Report.txt
     
     # ldapsearch
     sudo apt install -y ldap-utils
