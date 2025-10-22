@@ -181,6 +181,18 @@ if [ ! -d ~/WindowsTools ]; then
         sudo ln -sf "$(pwd)/shortscan" /usr/local/bin/shortscan
         echo "[+] shortscan Deployed" >> ~/Report.txt
     fi
+
+    # targetedkerberoast (Abuses ACLs to Add an SPN and Kerberoast)
+    mkdir -p ~/WindowsTools/targetedkerberoast
+    git clone https://github.com/ShutdownRepo/targetedKerberoast.git ~/WindowsTools/targetedkerberoast
+    sudo ln -s ~/WindowsTools/targetedkerberoast/targetedKerberoast.py /usr/local/bin/targetedKerberoast.py
+    echo "[+] TargetedKerberoast Deployed" >> ~/Report.txt
+    
+    mkdir -p ~/WindowsTools/dswalk
+    git clone https://github.com/Keramas/DS_Walk.git ~/WindowsTools/dswalk
+    sudo ln -s ~/WindowsTools/dswalk/ds_walk.py /usr/local/bin/ds_walk.py
+    sudo ln -s ~/WindowsTools/dswalk/dsstore.py /usr/local/bin/dsstore.py
+    echo "[+] DS_Walk Deployed" >> ~/Report.txt
     
     # krbrelayx
     git clone https://github.com/dirkjanm/krbrelayx.git ~/WindowsTools/krbrelayx
@@ -197,11 +209,6 @@ if [ ! -d ~/WindowsTools ]; then
     echo "[+] DS_Walk Deployed" >> ~/Report.txt
     
     # UNTESTED TOOLING -------------------------------------------------------------------------------------------------------
-    
-    # targetedkerberoast (Abuses ACLs to Add an SPN and Kerberoast)
-    # https://github.com/ShutdownRepo/targetedKerberoast
-    #uv tool install git+https://github.com/ShutdownRepo/targetedKerberoast.git # ERRORS HERE
-    #echo "[+] TargetedKerberoast Deployed" >> ~/Report.txt
     
     # https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS14-068/pykek
     #uv tool install git+https://github.com/mubix/pykek.git # ERRORS HERE
@@ -341,6 +348,10 @@ if [ ! -d ~/Monitoring ]; then
     sudo tar xf ~/Monitoring/btop/btop.tbz --strip-components=2 -C /usr/local ./btop/bin/btop
     echo "[+] Btop Deployed" >> ~/Report.txt
 fi
+
+# Set default tab opening to the Loot directory
+echo 'cd ~/Loot' >> ~/.zshrc
+echo 'cd ~/Loot' >> ~/.bashrc
 
 # Finishing Print Statement
 echo "[+] Lets Roll" >> ~/Report.txt
