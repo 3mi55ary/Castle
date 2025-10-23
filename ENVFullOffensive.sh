@@ -117,6 +117,7 @@ if [ ! -d ~/WindowsTools ]; then
     echo "[+] Impacket Deployed" >> ~/Report.txt
     
     # ldapdomaindump (sudo python3 ldapdomaindump.py ldap://DC -u 'DOMAIN\user' -p 'Password')
+    # If throwing MD4 crypt error (sudo python3 /usr/local/ldapdomaindump ldap://DC -u 'DOMAIN\user' -p 'Password')
     uv tool install git+https://github.com/dirkjanm/ldapdomaindump.git
     echo "[+] ldapdomaindump Deployed" >> ~/Report.txt
     
