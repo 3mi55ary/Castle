@@ -337,7 +337,7 @@ if [ ! -d ~/Captures ]; then
     echo "[+] XFCE Default Path Changed" >> ~/Report.txt
 fi
 #===============================================================================
-# System Monitoring ============================================================
+# System QoL ===================================================================
 #===============================================================================
 if [ ! -d ~/Monitoring ]; then
     # DUF
@@ -352,6 +352,13 @@ if [ ! -d ~/Monitoring ]; then
     wget -qO ~/Monitoring/btop/btop.tbz https://github.com/aristocratos/btop/releases/download/v1.4.5/btop-x86_64-linux-musl.tbz
     sudo tar xf ~/Monitoring/btop/btop.tbz --strip-components=2 -C /usr/local ./btop/bin/btop
     echo "[+] Btop Deployed" >> ~/Report.txt
+
+    # Creds Script
+    mkdir -p ~/Monitoring/qol
+    sudo mv ~/Castle/storecred.sh ~/Monitoring/qol/storecred.sh
+    sudo chmod +x ~/Monitoring/qol/storecred.sh
+    sudo ln -s ~/Monitoring/qol/storecred.sh /usr/local/bin/storecred
+    echo "[+] StoreCred Deployed" >> ~/Report.txt
 fi
 
 # Set default tab opening to the Loot directory
