@@ -355,9 +355,9 @@ if [ ! -d ~/Monitoring ]; then
 
     # Creds Script
     mkdir -p ~/Monitoring/qol
-    sudo mv ~/Castle/storecred.sh ~/Monitoring/qol/storecred.sh
-    sudo chmod +x ~/Monitoring/qol/storecred.sh
-    sudo ln -s ~/Monitoring/qol/storecred.sh /usr/local/bin/storecred
+    sudo mv ~/Castle/StoreCred.sh ~/Monitoring/qol/StoreCred.sh
+    sudo chmod +x ~/Monitoring/qol/StoreCred.sh
+    sudo ln -s ~/Monitoring/qol/StoreCred.sh /usr/local/bin/StoreCred
     echo "[+] StoreCred Deployed" >> ~/Report.txt
 fi
 
