@@ -358,6 +358,7 @@ if [ ! -d ~/Monitoring ]; then
     # Set default tab opening to the Loot directory
     echo 'cd ~/Loot' >> ~/.zshrc
     echo 'cd ~/Loot' >> ~/.bashrc
+    echo "[+] Default Opening Directory Deployed" >> ~/Report.txt
 fi
 
 #===============================================================================
