@@ -17,13 +17,18 @@ echo "[+] Report Created" > ~/Report.txt
 
 # Updates Kali GPG keyring
 sudo wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/kali-archive-keyring.gpg
+sudo apt update
 echo "[+] GPG Keyring Updated" >> ~/Report.txt
+
+if [ ! -d ~/Loot ]; then
+    mkdir -p ~/Loot
+    echo "[+] Loot Directory Added -- Start filling it!" >> ~/Report.txt
+fi
 
 #===============================================================================
 # Docker + Compose (Official Docker Repo) (Courtesy of wi0n - https://github.com/wi0n)
 #===============================================================================
 # Install prerequisites
-sudo apt update
 sudo apt install -y ca-certificates curl gnupg lsb-release
 
 # Add Docker's official GPG key (only if missing)
@@ -103,8 +108,10 @@ if [ ! -d ~/WindowsTools ]; then
         sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
         sudo docker logs $(uname -n)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
         sudo docker logs bloodhound-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
-        sudo mv ~/Castle/RedeployBloodhound.sh ~/WindowsTools/bloodhound
+        sudo mv ~/Castle/RedeployBloodhound.sh ~/WindowsTools/bloodhound # SECONDARY PERSONAL SCRIPT HERE
         sudo chmod +x ~/WindowsTools/bloodhound/RedeployBloodhound.sh
+        sudo ln -s ~/WindowsTools/bloodhound/RedeployBloodhound.sh /usr/local/bin/RedeployBloodhound
+        echo "[+] RedeployBloodhound Deployed" >> ~/Report.txt
         echo "[+] Bloodhound-CE Deployed" >> ~/Report.txt
     fi
     
@@ -148,11 +155,11 @@ if [ ! -d ~/WindowsTools ]; then
     
     # ldapsearch
     sudo apt install -y ldap-utils
-    echo "[+] ldapsearch Deployed" >> ~/Report.txt
+    echo "[+] LDAPsearch Deployed" >> ~/Report.txt
     
     # smbmap
     uv tool install git+https://github.com/ShawnDEvans/smbmap.git
-    echo "[+] smbmap Deployed" >> ~/Report.txt
+    echo "[+] SMBmap Deployed" >> ~/Report.txt
     
     # responder
     mkdir -p ~/WindowsTools/responder
@@ -175,7 +182,7 @@ if [ ! -d ~/WindowsTools ]; then
         git clone https://github.com/ropnop/go-windapsearch.git ~/WindowsTools/windapsearch
         cd ~/WindowsTools/windapsearch && go build ./cmd/windapsearch
         sudo ln -sf "$(pwd)/windapsearch" /usr/local/bin/windapsearch
-        echo "[+] windapsearch Deployed" >> ~/Report.txt
+        echo "[+] Windapsearch Deployed" >> ~/Report.txt
     fi
     
     # shortscan
@@ -184,7 +191,7 @@ if [ ! -d ~/WindowsTools ]; then
         git clone https://github.com/bitquark/shortscan.git ~/WindowsTools/shortscan
         cd ~/WindowsTools/shortscan/cmd/shortscan && go build
         sudo ln -sf "$(pwd)/shortscan" /usr/local/bin/shortscan
-        echo "[+] shortscan Deployed" >> ~/Report.txt
+        echo "[+] Shortscan Deployed" >> ~/Report.txt
     fi
 
     # targetedkerberoast (Abuses ACLs to Add an SPN and Kerberoast)
@@ -193,18 +200,13 @@ if [ ! -d ~/WindowsTools ]; then
     sudo ln -s ~/WindowsTools/targetedkerberoast/targetedKerberoast.py /usr/local/bin/targetedKerberoast.py
     echo "[+] TargetedKerberoast Deployed" >> ~/Report.txt
     
-    mkdir -p ~/WindowsTools/dswalk
-    git clone https://github.com/Keramas/DS_Walk.git ~/WindowsTools/dswalk
-    sudo ln -s ~/WindowsTools/dswalk/ds_walk.py /usr/local/bin/ds_walk.py
-    sudo ln -s ~/WindowsTools/dswalk/dsstore.py /usr/local/bin/dsstore.py
-    echo "[+] DS_Walk Deployed" >> ~/Report.txt
-    
     # krbrelayx
     git clone https://github.com/dirkjanm/krbrelayx.git ~/WindowsTools/krbrelayx
     sudo ln -s ~/WindowsTools/krbrelayx/krbrelayx.py /usr/local/bin/krbrelayx.py
     sudo ln -s ~/WindowsTools/krbrelayx/dnstool.py /usr/local/bin/dnstool.py
     sudo ln -s ~/WindowsTools/krbrelayx/addspn.py /usr/local/bin/addspn.py
     sudo ln -s ~/WindowsTools/krbrelayx/printerbug.py /usr/local/bin/printerbug.py
+    echo "[+] Krbrelayx Deployed" >> ~/Report.txt
     
     # ds_walk
     mkdir -p ~/WindowsTools/dswalk
@@ -246,13 +248,28 @@ if [ ! -d ~/WindowsNative ]; then
     
     # Manual Credential Hunting
     # echo "" >> ~/WindowsNative/CredentialHunting.txt
-    echo 'findstr /SIM /C:"password" *.txt *.ini *.cfg *.config *.xml' > ~/WindowsNative/CredentialHunting.txt
+    echo 'https://wadcoms.github.io/' > ~/WindowsNative/CredentialHunting.txt
+    echo 'findstr /SIM /C:"password" *.txt *.ini *.cfg *.config *.xml' >> ~/WindowsNative/CredentialHunting.txt
     echo 'findstr /SI /M "password" *.xml *.ini *.txt' >> ~/WindowsNative/CredentialHunting.txt
     echo 'findstr /si password *.xml *.ini *.txt *.config' >> ~/WindowsNative/CredentialHunting.txt
     echo 'findstr /spin "password" *.*' >> ~/WindowsNative/CredentialHunting.txt
     echo 'dir /S /B *pass*.txt == *pass*.xml == *pass*.ini == *cred* == *vnc* == *.config*' >> ~/WindowsNative/CredentialHunting.txt
     echo 'where /R C:\ *.config' >> ~/WindowsNative/CredentialHunting.txt
     echo 'foreach($user in ((ls C:\users).fullname)){cat "$user\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt" -ErrorAction SilentlyContinue}' >> ~/WindowsNative/CredentialHunting.txt
+    echo "[+] CredentialHunting Support File Deployed" >> ~/Report.txt
+
+    # Seatbelt https://github.com/GhostPack/Seatbelt (https://github.com/r3motecontrol/Ghostpack-CompiledBinaries)
+    # winPEAS https://github.com/peass-ng/PEASS-ng/tree/master/winPEAS
+    # PowerUp https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Privesc/PowerUp.ps1 
+    # SharpUp https://github.com/GhostPack/SharpUp (https://github.com/r3motecontrol/Ghostpack-CompiledBinaries)
+    # JAWS https://github.com/411Hall/JAWS
+    # SessionGopher https://github.com/Arvanaghi/SessionGopher
+    # Watson https://github.com/rasta-mouse/Watson
+    # LaZagne https://github.com/AlessandroZ/LaZagne
+    # Windows Exploit Suggester - Next Generation (WES-NG) https://github.com/bitsadmin/wesng
+    # Sysinternals https://learn.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite
+    # PrintSpoofer for SeImpersonate
+    # Backup Operator Copy NTDS.dit https://github.com/giuliano108/SeBackupPrivilege/tree/master
 fi
 
 #===============================================================================
@@ -284,24 +301,6 @@ if [ ! -d ~/PivotingTools ]; then
 fi
 
 #===============================================================================
-# Privilege Escelation (Transfer to Compromised Host) ==========================
-#===============================================================================
-#if [ ! -d ~/PrivEsc ]; then
-    # Seatbelt https://github.com/GhostPack/Seatbelt (https://github.com/r3motecontrol/Ghostpack-CompiledBinaries)
-    # winPEAS https://github.com/peass-ng/PEASS-ng/tree/master/winPEAS
-    # PowerUp https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Privesc/PowerUp.ps1 
-    # SharpUp https://github.com/GhostPack/SharpUp (https://github.com/r3motecontrol/Ghostpack-CompiledBinaries)
-    # JAWS https://github.com/411Hall/JAWS
-    # SessionGopher https://github.com/Arvanaghi/SessionGopher
-    # Watson https://github.com/rasta-mouse/Watson
-    # LaZagne https://github.com/AlessandroZ/LaZagne
-    # Windows Exploit Suggester - Next Generation (WES-NG) https://github.com/bitsadmin/wesng
-    # Sysinternals https://learn.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite
-    # PrintSpoofer for SeImpersonate
-    # Backup Operator Copy NTDS.dit https://github.com/giuliano108/SeBackupPrivilege/tree/master
-#fi
-
-#===============================================================================
 # Command & Control ============================================================
 #===============================================================================
 #if [ ! -d ~/C2 ]; then
@@ -319,23 +318,19 @@ fi
 #fi
 
 #===============================================================================
-# Screenshots / Captures =======================================================
+# Screenshots ==================================================================
 #===============================================================================
-if [ ! -d ~/Captures ]; then
-    # Create Staging Area
-    mkdir -p ~/Captures
-    
-    # Install and Configure Flameshot for Instant Usage
-    sudo apt install -y flameshot
-    flameshot &
-    echo "[+] Flameshot Deployed" >> ~/Report.txt
-    
-    # Set XFCE's default screenshot save path (BACKUP)
-    xfconf-query -c xfce4-screenshooter \
-        -p /last-save-location \
-        -s "$HOME/Captures"
-    echo "[+] XFCE Default Path Changed" >> ~/Report.txt
-fi
+# Install and Configure Flameshot for Instant Usage
+sudo apt install -y flameshot
+flameshot &
+echo "[+] Flameshot Deployed" >> ~/Report.txt
+
+# Set XFCE's default screenshot save path (BACKUP)
+xfconf-query -c xfce4-screenshooter \
+    -p /last-save-location \
+    -s "$HOME/Loot"
+echo "[+] XFCE Default Path Changed to ~/Loot" >> ~/Report.txt
+
 #===============================================================================
 # System QoL ===================================================================
 #===============================================================================
@@ -353,17 +348,20 @@ if [ ! -d ~/Monitoring ]; then
     sudo tar xf ~/Monitoring/btop/btop.tbz --strip-components=2 -C /usr/local ./btop/bin/btop
     echo "[+] Btop Deployed" >> ~/Report.txt
 
-    # Creds Script
+    # Creds Script (stores found credentials in 'username':'password' format and puts them in ~/Loot/creds.txt)
     mkdir -p ~/Monitoring/qol
-    sudo mv ~/Castle/StoreCred.sh ~/Monitoring/qol/StoreCred.sh
+    sudo mv ~/Castle/StoreCred.sh ~/Monitoring/qol/StoreCred.sh # SECONDARY PERSONAL SCRIPT HERE
     sudo chmod +x ~/Monitoring/qol/StoreCred.sh
     sudo ln -s ~/Monitoring/qol/StoreCred.sh /usr/local/bin/StoreCred
     echo "[+] StoreCred Deployed" >> ~/Report.txt
+
+    # Set default tab opening to the Loot directory
+    echo 'cd ~/Loot' >> ~/.zshrc
+    echo 'cd ~/Loot' >> ~/.bashrc
 fi
 
-# Set default tab opening to the Loot directory
-echo 'cd ~/Loot' >> ~/.zshrc
-echo 'cd ~/Loot' >> ~/.bashrc
-
+#===============================================================================
+# Wrapping Up ==================================================================
+#===============================================================================
 # Finishing Print Statement
 echo "[+] Lets Roll" >> ~/Report.txt
