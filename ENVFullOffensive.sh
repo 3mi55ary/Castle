@@ -15,6 +15,10 @@
 # Create Report
 echo "[+] Report Created" > ~/Report.txt
 
+# Generate Quick Commands Guide
+echo "=== QUICK COMMANDS GUIDE ===" > ~/Commands.txt
+echo "[+] Quick Commands Guide Created" > ~/Report.txt
+
 # Updates Kali GPG keyring
 sudo wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/kali-archive-keyring.gpg
 sudo apt update
@@ -90,6 +94,7 @@ fi
 if [ ! -d ~/WindowsTools ]; then   
     # NetExec
     uv tool install git+https://github.com/Pennyw0rth/NetExec.git
+    echo "NXC: nxc <service> -u '' -p '' (-M <module>)" >> ~/Commands.txt
     echo "[+] NXC Deployed" >> ~/Report.txt
     
     # BloodHound-CE
@@ -111,21 +116,25 @@ if [ ! -d ~/WindowsTools ]; then
         sudo mv ~/Castle/RedeployBloodhound.sh ~/WindowsTools/bloodhound # SECONDARY PERSONAL SCRIPT HERE
         sudo chmod +x ~/WindowsTools/bloodhound/RedeployBloodhound.sh
         sudo ln -s ~/WindowsTools/bloodhound/RedeployBloodhound.sh /usr/local/bin/RedeployBloodhound
+        echo "Bloodhound-CE: RedeployBloodhound" >> ~/Commands.txt
         echo "[+] RedeployBloodhound Deployed" >> ~/Report.txt
         echo "[+] Bloodhound-CE Deployed" >> ~/Report.txt
     fi
     
     # Bloodhound-CE Ingestor (Python Based) (bloodhound-ce-python -c All -d yourdomain.local -u username -p password -ns dnsserver)
     uv tool install git+https://github.com/dirkjanm/BloodHound.py@bloodhound-ce
+    echo "Bloodhound-CE Ingestor: bloodhound-ce-python -c All -d yourdomain.local -u username -p password -ns dnsserver" >> ~/Commands.txt
     echo "[+] Bloodhound-CE Ingestor Deployed" >> ~/Report.txt
     
     # Impacket
     uv tool install git+https://github.com/fortra/impacket.git
+    echo "IMPACKET: impacket-<option> domain/username:'password'@<IP/Hostname>" >> ~/Commands.txt
     echo "[+] Impacket Deployed" >> ~/Report.txt
     
     # ldapdomaindump (sudo python3 ldapdomaindump.py ldap://DC -u 'DOMAIN\user' -p 'Password')
     # If throwing MD4 crypt error (sudo python3 /usr/local/ldapdomaindump ldap://DC -u 'DOMAIN\user' -p 'Password')
     uv tool install git+https://github.com/dirkjanm/ldapdomaindump.git
+    echo "LDAPDOMAINDUMP: sudo python3 /usr/local/ldapdomaindump ldap://<DC-IP> -u 'DOMAIN\user' -p 'Password'" >> ~/Commands.txt
     echo "[+] ldapdomaindump Deployed" >> ~/Report.txt
     
     # BloodyAD
