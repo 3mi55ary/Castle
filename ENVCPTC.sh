@@ -19,11 +19,6 @@ echo "[+] Report Created" > ~/Report.txt
 echo "=== QUICK COMMANDS GUIDE ===" > ~/Commands.txt
 echo "[+] Quick Commands Guide Created" > ~/Report.txt
 
-# Updates Kali GPG keyring
-sudo wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/kali-archive-keyring.gpg
-sudo apt update
-echo "[+] GPG Keyring Updated" >> ~/Report.txt
-
 if [ ! -d ~/Loot ]; then
     mkdir -p ~/Loot
     echo "[+] Loot Directory Added -- Start filling it!" >> ~/Report.txt
@@ -38,12 +33,6 @@ echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
 if ! command -v uv &>/dev/null; then
     curl -LsSf https://astral.sh/uv/install.sh | sh
     echo "[+] UV Installed" >> ~/Report.txt
-fi
-
-# Install Golang
-if ! command -v go &>/dev/null; then
-    sudo apt install -y golang-go
-    echo "[+] Golang Installed" >> ~/Report.txt
 fi
 
 #===============================================================================
@@ -207,6 +196,8 @@ if [ ! -d ~/PivotingTools ]; then
     mkdir -p ~/PivotingTools/ligolo
     wget -P ~/PivotingTools/ligolo https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz
     wget -P ~/PivotingTools/ligolo https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_agent_0.8.2_linux_amd64.tar.gz
+    sudo rm ~/PivotingTools/ligolo/LICENSE
+    sudo rm ~/PivotingTools/ligolo/README.md
     wget -P ~/PivotingTools/ligolo https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_agent_0.8.2_windows_amd64.zip
     tar -xvzf ~/PivotingTools/ligolo/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz -C ~/PivotingTools/ligolo
     tar -xvzf ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_linux_amd64.tar.gz -C ~/PivotingTools/ligolo
@@ -292,3 +283,14 @@ fi
 #===============================================================================
 # Finishing Print Statement
 echo "[+] Lets Roll" >> ~/Report.txt
+
+# Updates Kali GPG keyring
+#sudo wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/kali-archive-keyring.gpg
+#sudo apt update
+#echo "[+] GPG Keyring Updated" >> ~/Report.txt
+
+# Install Golang
+#if ! command -v go &>/dev/null; then
+    #sudo apt install -y golang-go
+    #echo "[+] Golang Installed" >> ~/Report.txt
+#fi
