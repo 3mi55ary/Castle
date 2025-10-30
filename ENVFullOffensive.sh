@@ -72,7 +72,6 @@ echo "[+] Docker Deployed" >> ~/Report.txt
 #===============================================================================
 # Requirements =================================================================
 #===============================================================================
-
 # Install UV
 export PATH="$HOME/.local/bin:$PATH"
 echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.zshrc
@@ -88,12 +87,12 @@ if ! command -v go &>/dev/null; then
 fi
 
 #===============================================================================
-# WINDOWS TOOLING ==============================================================
+# WINDOWS TOOLING (UV and Bloodhound) ==========================================
 #===============================================================================
 # https://wadcoms.github.io/
 if [ ! -d ~/WindowsTools ]; then   
     # NetExec
-    uv tool install git+https://github.com/Pennyw0rth/NetExec.git
+    uv tool install git+https://github.com/Pennyw0rth/NetExec.git --force
     echo "NXC: nxc <service> -u '' -p '' (-M <module>)" >> ~/Commands.txt
     echo "[+] NXC Deployed" >> ~/Report.txt
     
@@ -122,86 +121,96 @@ if [ ! -d ~/WindowsTools ]; then
     fi
     
     # Bloodhound-CE Ingestor (Python Based) (bloodhound-ce-python -c All -d yourdomain.local -u username -p password -ns dnsserver)
-    uv tool install git+https://github.com/dirkjanm/BloodHound.py@bloodhound-ce
+    uv tool install git+https://github.com/dirkjanm/BloodHound.py@bloodhound-ce --force
     echo "Bloodhound-CE Ingestor: bloodhound-ce-python -c All -d yourdomain.local -u username -p password -ns dnsserver" >> ~/Commands.txt
     echo "[+] Bloodhound-CE Ingestor Deployed" >> ~/Report.txt
     
     # Impacket
-    uv tool install git+https://github.com/fortra/impacket.git
+    uv tool install git+https://github.com/fortra/impacket.git --force
     echo "IMPACKET: impacket-<option> domain/username:'password'@<IP/Hostname>" >> ~/Commands.txt
     echo "[+] Impacket Deployed" >> ~/Report.txt
     
     # ldapdomaindump (sudo python3 ldapdomaindump.py ldap://DC -u 'DOMAIN\user' -p 'Password')
     # If throwing MD4 crypt error (sudo python3 /usr/local/bin/ldapdomaindump ldap://DC -u 'DOMAIN\user' -p 'Password')
-    uv tool install git+https://github.com/dirkjanm/ldapdomaindump.git
+    uv tool install git+https://github.com/dirkjanm/ldapdomaindump.git --force
     echo "LDAPDOMAINDUMP: sudo python3 /usr/local/bin/ldapdomaindump ldap://<DC-IP> -u 'DOMAIN\user' -p 'Password'" >> ~/Commands.txt
     echo "[+] ldapdomaindump Deployed" >> ~/Report.txt
     
     # BloodyAD
-    uv tool install git+https://github.com/CravateRouge/bloodyAD.git
+    uv tool install git+https://github.com/CravateRouge/bloodyAD.git --force
     echo "[+] BloodyAD Deployed" >> ~/Report.txt
     
     # Certipy-AD
-    uv tool install git+https://github.com/ly4k/Certipy.git
+    uv tool install git+https://github.com/ly4k/Certipy.git --force
     echo "[+] Certipy Deployed" >> ~/Report.txt
     
+    # Evil-WinRM-py
+    uv tool install git+https://github.com/adityatelange/evil-winrm-py.git --force
+    echo "[+] Evil-WinRM-py Deployed" >> ~/Report.txt
+    
+    # enum4linux
+    uv tool install git+https://github.com/cddmp/enum4linux-ng.git --force
+    echo "[+] enum4linux Deployed" >> ~/Report.txt
+
+    # pyWhisker
+    uv tool install git+https://github.com/ShutdownRepo/pywhisker.git --force
+    echo "[+] pyWhisker Deployed" >> ~/Report.txt
+    
+    # smbmap
+    uv tool install git+https://github.com/ShawnDEvans/smbmap.git --force
+    echo "[+] SMBmap Deployed" >> ~/Report.txt
+
+    #===============================================================================
+    # WINDOWS TOOLING (Make/Build/Link) ============================================
+    #===============================================================================
+    # Updates Kali GPG keyring
+    sudo wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/kali-archive-keyring.gpg
+    sudo apt update
+    echo "[+] GPG Keyring Updated" >> ~/Report.txt
+
+    # Install Golang
+    if ! command -v go &>/dev/null; then
+        sudo apt install -y golang-go
+        echo "[+] Golang Installed" >> ~/Report.txt
+    fi
+
+    # kerbrute (sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt | Create users list from ldapdomaindump | Hashcat mode 18200)
+    mkdir -p ~/WindowsTools/kerbrute
+    git clone https://github.com/ropnop/kerbrute.git ~/WindowsTools/kerbrute
+    sudo make -C ~/WindowsTools/kerbrute all
+    sudo ln -sf ~/WindowsTools/kerbrute/dist/kerbrute_linux_amd64 /usr/local/bin/kerbrute
+    echo "KERBRUTE: sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt" >> ~/Commands.txt
+    echo "[+] Kerbrute Deployed" >> ~/Report.txt
+        
     # Evil-WinRM
     sudo apt install -y ruby ruby-dev libkrb5-dev
     sudo gem install evil-winrm
     echo "[+] Evil-WinRM Deployed" >> ~/Report.txt
-    
-    # Evil-WinRM-py
-    uv tool install git+https://github.com/adityatelange/evil-winrm-py.git
-    echo "[+] Evil-WinRM-py Deployed" >> ~/Report.txt
-    
-    # enum4linux
-    uv tool install git+https://github.com/cddmp/enum4linux-ng.git
-    echo "[+] enum4linux Deployed" >> ~/Report.txt
 
-    # pyWhisker
-    uv tool install git+https://github.com/ShutdownRepo/pywhisker.git
-    echo "[+] pyWhisker Deployed" >> ~/Report.txt
-    
-    # ldapsearch
-    sudo apt install -y ldap-utils
-    echo "[+] LDAPsearch Deployed" >> ~/Report.txt
-    
-    # smbmap
-    uv tool install git+https://github.com/ShawnDEvans/smbmap.git
-    echo "[+] SMBmap Deployed" >> ~/Report.txt
-    
     # responder
     mkdir -p ~/WindowsTools/responder
     git clone https://github.com/lgandx/Responder.git ~/WindowsTools/responder
     sudo ln -s ~/WindowsTools/responder/Responder.py /usr/local/bin/responder2
+    echo "RESPONDER: sudo responder2 -i eth0" >> ~/Commands.txt
     echo "[+] Responder Deployed" >> ~/Report.txt
-    
-    # kerbrute (sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt | Create users list from ldapdomaindump | Hashcat mode 18200)
-    if ! command -v kerbrute &>/dev/null; then
-        mkdir -p ~/WindowsTools/kerbrute
-        git clone https://github.com/ropnop/kerbrute.git ~/WindowsTools/kerbrute
-        sudo make -C ~/WindowsTools/kerbrute all
-        sudo ln -sf ~/WindowsTools/kerbrute/dist/kerbrute_linux_amd64 /usr/local/bin/kerbrute
-        echo "[+] Kerbrute Deployed" >> ~/Report.txt
-    fi
+
+    # ldapsearch
+    sudo apt install -y ldap-utils
+    echo "[+] LDAPsearch Deployed" >> ~/Report.txt
     
     # windapsearch
-    if ! command -v windapsearch &>/dev/null; then
-        mkdir -p ~/WindowsTools/windapsearch
-        git clone https://github.com/ropnop/go-windapsearch.git ~/WindowsTools/windapsearch
-        cd ~/WindowsTools/windapsearch && go build ./cmd/windapsearch
-        sudo ln -sf "$(pwd)/windapsearch" /usr/local/bin/windapsearch
-        echo "[+] Windapsearch Deployed" >> ~/Report.txt
-    fi
+    mkdir -p ~/WindowsTools/windapsearch
+    git clone https://github.com/ropnop/go-windapsearch.git ~/WindowsTools/windapsearch
+    cd ~/WindowsTools/windapsearch && go build ./cmd/windapsearch
+    sudo ln -sf "$(pwd)/windapsearch" /usr/local/bin/windapsearch
+    echo "[+] Windapsearch Deployed" >> ~/Report.txt
     
     # shortscan
-    if ! command -v shortscan &>/dev/null; then
-        mkdir -p ~/WindowsTools/shortscan
-        git clone https://github.com/bitquark/shortscan.git ~/WindowsTools/shortscan
-        cd ~/WindowsTools/shortscan/cmd/shortscan && go build
-        sudo ln -sf "$(pwd)/shortscan" /usr/local/bin/shortscan
-        echo "[+] Shortscan Deployed" >> ~/Report.txt
-    fi
+    mkdir -p ~/WindowsTools/shortscan
+    git clone https://github.com/bitquark/shortscan.git ~/WindowsTools/shortscan
+    cd ~/WindowsTools/shortscan/cmd/shortscan && go build
+    sudo ln -sf "$(pwd)/shortscan" /usr/local/bin/shortscan
+    echo "[+] Shortscan Deployed" >> ~/Report.txt
 
     # targetedkerberoast (Abuses ACLs to Add an SPN and Kerberoast)
     mkdir -p ~/WindowsTools/targetedkerberoast
@@ -223,49 +232,6 @@ if [ ! -d ~/WindowsTools ]; then
     sudo ln -s ~/WindowsTools/dswalk/ds_walk.py /usr/local/bin/ds_walk.py
     sudo ln -s ~/WindowsTools/dswalk/dsstore.py /usr/local/bin/dsstore.py
     echo "[+] DS_Walk Deployed" >> ~/Report.txt
-    
-    # UNTESTED TOOLING -------------------------------------------------------------------------------------------------------
-    
-    # https://github.com/SecWiki/windows-kernel-exploits/tree/master/MS14-068/pykek
-    #uv tool install git+https://github.com/mubix/pykek.git # ERRORS HERE
-    #echo "[+] pykek Deployed" >> ~/Report.txt
-fi
-
-#===============================================================================
-# WINDOWS TOOLING (Transfer to Compromised Host) ===============================
-#===============================================================================
-if [ ! -d ~/WindowsNative ]; then
-    # mimikatz
-    mkdir -p ~/WindowsNative/mimikatz
-    git clone https://github.com/ParrotSec/mimikatz.git ~/WindowsNative/mimikatz
-    echo "[+] Mimikatz Added" >> ~/Report.txt
-
-    # netcat
-    mkdir -p ~/WindowsNative/netcat
-    git clone https://github.com/int0x33/nc.exe.git ~/WindowsNative/netcat
-    echo "[+] Netcat Added" >> ~/Report.txt
-    
-    # inveigh
-    mkdir -p ~/WindowsNative/inveigh
-    git clone https://github.com/Kevin-Robertson/Inveigh.git ~/WindowsNative/inveigh
-    echo "[+] Inveigh Added" >> ~/Report.txt
-    
-    # powersploit (RECON -> Then Upload PowerView.ps1)
-    mkdir -p ~/WindowsNative/powersploit
-    git clone https://github.com/PowerShellMafia/PowerSploit.git ~/WindowsNative/powersploit
-    echo "[+] PowerSploit Added" >> ~/Report.txt
-    
-    # Manual Credential Hunting
-    # echo "" >> ~/WindowsNative/CredentialHunting.txt
-    echo 'https://wadcoms.github.io/' > ~/WindowsNative/CredentialHunting.txt
-    echo 'findstr /SIM /C:"password" *.txt *.ini *.cfg *.config *.xml' >> ~/WindowsNative/CredentialHunting.txt
-    echo 'findstr /SI /M "password" *.xml *.ini *.txt' >> ~/WindowsNative/CredentialHunting.txt
-    echo 'findstr /si password *.xml *.ini *.txt *.config' >> ~/WindowsNative/CredentialHunting.txt
-    echo 'findstr /spin "password" *.*' >> ~/WindowsNative/CredentialHunting.txt
-    echo 'dir /S /B *pass*.txt == *pass*.xml == *pass*.ini == *cred* == *vnc* == *.config*' >> ~/WindowsNative/CredentialHunting.txt
-    echo 'where /R C:\ *.config' >> ~/WindowsNative/CredentialHunting.txt
-    echo 'foreach($user in ((ls C:\users).fullname)){cat "$user\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt" -ErrorAction SilentlyContinue}' >> ~/WindowsNative/CredentialHunting.txt
-    echo "[+] CredentialHunting Support File Deployed" >> ~/Report.txt
 
     # Seatbelt https://github.com/GhostPack/Seatbelt (https://github.com/r3motecontrol/Ghostpack-CompiledBinaries)
     # winPEAS https://github.com/peass-ng/PEASS-ng/tree/master/winPEAS
