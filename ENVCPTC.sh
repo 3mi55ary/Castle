@@ -36,7 +36,7 @@ if ! command -v uv &>/dev/null; then
 fi
 
 #===============================================================================
-# WINDOWS TOOLING ==============================================================
+# WINDOWS TOOLING (UV) =========================================================
 #===============================================================================
 # https://wadcoms.github.io/
 if [ ! -d ~/WindowsTools ]; then   
@@ -93,6 +93,20 @@ if [ ! -d ~/WindowsTools ]; then
     # smbmap
     uv tool install git+https://github.com/ShawnDEvans/smbmap.git
     echo "[+] SMBmap Deployed" >> ~/Report.txt
+
+    #===============================================================================
+    # WINDOWS TOOLING (Make/Build/Link) ============================================
+    #===============================================================================
+    # Updates Kali GPG keyring
+    sudo wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/kali-archive-keyring.gpg
+    sudo apt update
+    echo "[+] GPG Keyring Updated" >> ~/Report.txt
+
+    # Install Golang
+    if ! command -v go &>/dev/null; then
+        sudo apt install -y golang-go
+        echo "[+] Golang Installed" >> ~/Report.txt
+    fi
     
     # responder
     mkdir -p ~/WindowsTools/responder
@@ -100,34 +114,28 @@ if [ ! -d ~/WindowsTools ]; then
     sudo ln -s ~/WindowsTools/responder/Responder.py /usr/local/bin/responder2
     echo "RESPONDER: sudo responder2 -i eth0" >> ~/Commands.txt
     echo "[+] Responder Deployed" >> ~/Report.txt
-    
+
     # kerbrute (sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt | Create users list from ldapdomaindump | Hashcat mode 18200)
-    if ! command -v kerbrute &>/dev/null; then
-        mkdir -p ~/WindowsTools/kerbrute
-        git clone https://github.com/ropnop/kerbrute.git ~/WindowsTools/kerbrute
-        sudo make -C ~/WindowsTools/kerbrute all
-        sudo ln -sf ~/WindowsTools/kerbrute/dist/kerbrute_linux_amd64 /usr/local/bin/kerbrute
-        echo "KERBRUTE: sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt" >> ~/Commands.txt
-        echo "[+] Kerbrute Deployed" >> ~/Report.txt
-    fi
+    mkdir -p ~/WindowsTools/kerbrute
+    git clone https://github.com/ropnop/kerbrute.git ~/WindowsTools/kerbrute
+    sudo make -C ~/WindowsTools/kerbrute all
+    sudo ln -sf ~/WindowsTools/kerbrute/dist/kerbrute_linux_amd64 /usr/local/bin/kerbrute
+    echo "KERBRUTE: sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt" >> ~/Commands.txt
+    echo "[+] Kerbrute Deployed" >> ~/Report.txt
     
     # windapsearch
-    if ! command -v windapsearch &>/dev/null; then
-        mkdir -p ~/WindowsTools/windapsearch
-        git clone https://github.com/ropnop/go-windapsearch.git ~/WindowsTools/windapsearch
-        cd ~/WindowsTools/windapsearch && go build ./cmd/windapsearch
-        sudo ln -sf "$(pwd)/windapsearch" /usr/local/bin/windapsearch
-        echo "[+] Windapsearch Deployed" >> ~/Report.txt
-    fi
+    mkdir -p ~/WindowsTools/windapsearch
+    git clone https://github.com/ropnop/go-windapsearch.git ~/WindowsTools/windapsearch
+    cd ~/WindowsTools/windapsearch && go build ./cmd/windapsearch
+    sudo ln -sf "$(pwd)/windapsearch" /usr/local/bin/windapsearch
+    echo "[+] Windapsearch Deployed" >> ~/Report.txt
     
     # shortscan
-    if ! command -v shortscan &>/dev/null; then
-        mkdir -p ~/WindowsTools/shortscan
-        git clone https://github.com/bitquark/shortscan.git ~/WindowsTools/shortscan
-        cd ~/WindowsTools/shortscan/cmd/shortscan && go build
-        sudo ln -sf "$(pwd)/shortscan" /usr/local/bin/shortscan
-        echo "[+] Shortscan Deployed" >> ~/Report.txt
-    fi
+    mkdir -p ~/WindowsTools/shortscan
+    git clone https://github.com/bitquark/shortscan.git ~/WindowsTools/shortscan
+    cd ~/WindowsTools/shortscan/cmd/shortscan && go build
+    sudo ln -sf "$(pwd)/shortscan" /usr/local/bin/shortscan
+    echo "[+] Shortscan Deployed" >> ~/Report.txt
 
     # targetedkerberoast (Abuses ACLs to Add an SPN and Kerberoast)
     mkdir -p ~/WindowsTools/targetedkerberoast
@@ -195,6 +203,8 @@ if [ ! -d ~/PivotingTools ]; then
     # ligolo
     mkdir -p ~/PivotingTools/ligolo
     wget -P ~/PivotingTools/ligolo https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz
+    sudo rm ~/PivotingTools/ligolo/LICENSE
+    sudo rm ~/PivotingTools/ligolo/README.md
     wget -P ~/PivotingTools/ligolo https://github.com/nicocha30/ligolo-ng/releases/download/v0.8.2/ligolo-ng_agent_0.8.2_linux_amd64.tar.gz
     sudo rm ~/PivotingTools/ligolo/LICENSE
     sudo rm ~/PivotingTools/ligolo/README.md
@@ -283,14 +293,3 @@ fi
 #===============================================================================
 # Finishing Print Statement
 echo "[+] Lets Roll" >> ~/Report.txt
-
-# Updates Kali GPG keyring
-#sudo wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/kali-archive-keyring.gpg
-#sudo apt update
-#echo "[+] GPG Keyring Updated" >> ~/Report.txt
-
-# Install Golang
-#if ! command -v go &>/dev/null; then
-    #sudo apt install -y golang-go
-    #echo "[+] Golang Installed" >> ~/Report.txt
-#fi
