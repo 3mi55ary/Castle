@@ -41,57 +41,48 @@ fi
 # https://wadcoms.github.io/
 if [ ! -d ~/WindowsTools ]; then   
     # NetExec
-    uv tool install git+https://github.com/Pennyw0rth/NetExec.git
+    uv tool install git+https://github.com/Pennyw0rth/NetExec.git --force
     echo "NXC: nxc <service> -u '' -p '' (-M <module>)" >> ~/Commands.txt
     echo "[+] NXC Deployed" >> ~/Report.txt
     
     # Bloodhound-CE Ingestor (Python Based) (bloodhound-ce-python -c All -d yourdomain.local -u username -p password -ns dnsserver)
-    uv tool install git+https://github.com/dirkjanm/BloodHound.py@bloodhound-ce
+    uv tool install git+https://github.com/dirkjanm/BloodHound.py@bloodhound-ce --force
     echo "Bloodhound-CE Ingestor: bloodhound-ce-python -c All -d yourdomain.local -u username -p password -ns dnsserver" >> ~/Commands.txt
     echo "[+] Bloodhound-CE Ingestor Deployed" >> ~/Report.txt
     
     # Impacket
-    uv tool install git+https://github.com/fortra/impacket.git
+    uv tool install git+https://github.com/fortra/impacket.git --force
     echo "IMPACKET: impacket-<option> domain/username:'password'@<IP/Hostname>" >> ~/Commands.txt
     echo "[+] Impacket Deployed" >> ~/Report.txt
     
     # ldapdomaindump (sudo python3 ldapdomaindump.py ldap://DC -u 'DOMAIN\user' -p 'Password')
     # If throwing MD4 crypt error (sudo python3 /usr/local/bin/ldapdomaindump ldap://DC -u 'DOMAIN\user' -p 'Password')
-    uv tool install git+https://github.com/dirkjanm/ldapdomaindump.git
+    uv tool install git+https://github.com/dirkjanm/ldapdomaindump.git --force
     echo "LDAPDOMAINDUMP: sudo python3 /usr/local/bin/ldapdomaindump ldap://<DC-IP> -u 'DOMAIN\user' -p 'Password'" >> ~/Commands.txt
     echo "[+] ldapdomaindump Deployed" >> ~/Report.txt
     
     # BloodyAD
-    uv tool install git+https://github.com/CravateRouge/bloodyAD.git
+    uv tool install git+https://github.com/CravateRouge/bloodyAD.git --force
     echo "[+] BloodyAD Deployed" >> ~/Report.txt
     
     # Certipy-AD
-    uv tool install git+https://github.com/ly4k/Certipy.git
+    uv tool install git+https://github.com/ly4k/Certipy.git --force
     echo "[+] Certipy Deployed" >> ~/Report.txt
     
-    # Evil-WinRM
-    sudo apt install -y ruby ruby-dev libkrb5-dev
-    sudo gem install evil-winrm
-    echo "[+] Evil-WinRM Deployed" >> ~/Report.txt
-    
     # Evil-WinRM-py
-    uv tool install git+https://github.com/adityatelange/evil-winrm-py.git
+    uv tool install git+https://github.com/adityatelange/evil-winrm-py.git --force
     echo "[+] Evil-WinRM-py Deployed" >> ~/Report.txt
     
     # enum4linux
-    uv tool install git+https://github.com/cddmp/enum4linux-ng.git
+    uv tool install git+https://github.com/cddmp/enum4linux-ng.git --force
     echo "[+] enum4linux Deployed" >> ~/Report.txt
 
     # pyWhisker
-    uv tool install git+https://github.com/ShutdownRepo/pywhisker.git
+    uv tool install git+https://github.com/ShutdownRepo/pywhisker.git --force
     echo "[+] pyWhisker Deployed" >> ~/Report.txt
     
-    # ldapsearch
-    sudo apt install -y ldap-utils
-    echo "[+] LDAPsearch Deployed" >> ~/Report.txt
-    
     # smbmap
-    uv tool install git+https://github.com/ShawnDEvans/smbmap.git
+    uv tool install git+https://github.com/ShawnDEvans/smbmap.git --force
     echo "[+] SMBmap Deployed" >> ~/Report.txt
 
     #===============================================================================
@@ -107,13 +98,6 @@ if [ ! -d ~/WindowsTools ]; then
         sudo apt install -y golang-go
         echo "[+] Golang Installed" >> ~/Report.txt
     fi
-    
-    # responder
-    mkdir -p ~/WindowsTools/responder
-    git clone https://github.com/lgandx/Responder.git ~/WindowsTools/responder
-    sudo ln -s ~/WindowsTools/responder/Responder.py /usr/local/bin/responder2
-    echo "RESPONDER: sudo responder2 -i eth0" >> ~/Commands.txt
-    echo "[+] Responder Deployed" >> ~/Report.txt
 
     # kerbrute (sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt | Create users list from ldapdomaindump | Hashcat mode 18200)
     mkdir -p ~/WindowsTools/kerbrute
@@ -122,6 +106,22 @@ if [ ! -d ~/WindowsTools ]; then
     sudo ln -sf ~/WindowsTools/kerbrute/dist/kerbrute_linux_amd64 /usr/local/bin/kerbrute
     echo "KERBRUTE: sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt" >> ~/Commands.txt
     echo "[+] Kerbrute Deployed" >> ~/Report.txt
+        
+    # Evil-WinRM
+    sudo apt install -y ruby ruby-dev libkrb5-dev
+    sudo gem install evil-winrm
+    echo "[+] Evil-WinRM Deployed" >> ~/Report.txt
+
+    # responder
+    mkdir -p ~/WindowsTools/responder
+    git clone https://github.com/lgandx/Responder.git ~/WindowsTools/responder
+    sudo ln -s ~/WindowsTools/responder/Responder.py /usr/local/bin/responder2
+    echo "RESPONDER: sudo responder2 -i eth0" >> ~/Commands.txt
+    echo "[+] Responder Deployed" >> ~/Report.txt
+
+    # ldapsearch
+    sudo apt install -y ldap-utils
+    echo "[+] LDAPsearch Deployed" >> ~/Report.txt
     
     # windapsearch
     mkdir -p ~/WindowsTools/windapsearch
