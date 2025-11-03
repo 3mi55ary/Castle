@@ -24,6 +24,11 @@ sudo wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/ka
 sudo apt update
 echo "[+] GPG Keyring Updated" >> ~/Report.txt
 
+if [ ! -d ~/Outpost ]; then
+    git clone https://github.com/3mi55ary/Outpost.git ~/Outpost
+    echo "[+] Outpost Directory Added!" >> ~/Report.txt
+fi
+
 if [ ! -d ~/Loot ]; then
     mkdir -p ~/Loot
     echo "[+] Loot Directory Added -- Start filling it!" >> ~/Report.txt
@@ -101,8 +106,6 @@ if [ ! -d ~/WindowsTools ]; then
         mkdir -p ~/WindowsTools/bloodhound
         sudo curl -L https://ghst.ly/getbhce -o ~/WindowsTools/bloodhound/docker-compose.yml
         sudo docker-compose -f ~/WindowsTools/bloodhound/docker-compose.yml up -d
-        echo "sudo docker-compose -f docker-compose.yml up -d" > ~/WindowsTools/bloodhound/Deploy.sh
-        chmod +x ~/WindowsTools/bloodhound/Deploy.sh
         until curl -sfI http://localhost:8080/ui >/dev/null; do
             sleep 5
         done
@@ -112,7 +115,7 @@ if [ ! -d ~/WindowsTools ]; then
         sudo docker logs $(whoami)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
         sudo docker logs $(uname -n)-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
         sudo docker logs bloodhound-bloodhound-1 2>&1 | grep "Initial Password Set To:" >> ~/Report.txt
-        sudo mv ~/Castle/RedeployBloodhound.sh ~/WindowsTools/bloodhound # SECONDARY PERSONAL SCRIPT HERE
+        sudo cp ~/Outpost/RedeployBloodhound.sh ~/WindowsTools/bloodhound # SECONDARY PERSONAL SCRIPT HERE
         sudo chmod +x ~/WindowsTools/bloodhound/RedeployBloodhound.sh
         sudo ln -s ~/WindowsTools/bloodhound/RedeployBloodhound.sh /usr/local/bin/RedeployBloodhound
         echo "Bloodhound-CE: RedeployBloodhound" >> ~/Commands.txt
@@ -261,7 +264,7 @@ if [ ! -d ~/PivotingTools ]; then
     unzip -q ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_windows_amd64.zip -d ~/PivotingTools/ligolo
     mkdir -p ~/PivotingTools/ligolo/storage
     sudo mv ~/PivotingTools/ligolo/ligolo-ng_proxy_0.8.2_linux_amd64.tar.gz ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_linux_amd64.tar.gz ~/PivotingTools/ligolo/ligolo-ng_agent_0.8.2_windows_amd64.zip ~/PivotingTools/ligolo/storage
-    sudo mv ~/Castle/LigoloNXC.sh ~/PivotingTools/ligolo
+    sudo cp ~/Outpost/LigoloNXC.sh ~/PivotingTools/ligolo
     sudo chmod +x ~/PivotingTools/ligolo/LigoloNXC.sh
     echo "[+] Ligolo Deployed" >> ~/Report.txt
 
@@ -325,7 +328,7 @@ if [ ! -d ~/Monitoring ]; then
 
     # Creds Script (stores found credentials in 'username':'password' format and puts them in ~/Loot/creds.txt)
     mkdir -p ~/Monitoring/qol
-    sudo mv ~/Castle/StoreCred.sh ~/Monitoring/qol/StoreCred.sh # SECONDARY PERSONAL SCRIPT HERE
+    sudo cp ~/Outpost/StoreCred.sh ~/Monitoring/qol/StoreCred.sh # SECONDARY PERSONAL SCRIPT HERE
     sudo chmod +x ~/Monitoring/qol/StoreCred.sh
     sudo ln -s ~/Monitoring/qol/StoreCred.sh /usr/local/bin/StoreCred
     echo "[+] StoreCred Deployed" >> ~/Report.txt
