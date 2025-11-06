@@ -333,6 +333,13 @@ if [ ! -d ~/Monitoring ]; then
     sudo ln -s ~/Monitoring/qol/StoreCred.sh /usr/local/bin/StoreCred
     echo "[+] StoreCred Deployed" >> ~/Report.txt
 
+    # Hostname Script (stores hostname in /etc/hosts)
+    mkdir -p ~/Monitoring/qol
+    sudo cp ~/Outpost/StoreHostname.sh ~/Monitoring/qol/StoreHostname.sh # SECONDARY PERSONAL SCRIPT HERE
+    sudo chmod +x ~/Monitoring/qol/StoreHostname.sh
+    sudo ln -s ~/Monitoring/qol/StoreHostname.sh /usr/local/bin/StoreHostname
+    echo "[+] StoreHostname Deployed" >> ~/Report.txt
+
     # Set default tab opening to the Loot directory
     echo 'cd ~/Loot' >> ~/.zshrc
     echo 'cd ~/Loot' >> ~/.bashrc
