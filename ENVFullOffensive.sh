@@ -186,7 +186,14 @@ if [ ! -d ~/WindowsTools ]; then
     sudo ln -sf ~/WindowsTools/kerbrute/dist/kerbrute_linux_amd64 /usr/local/bin/kerbrute
     echo "KERBRUTE: sudo kerbrute userenum -d DOMAIN.local --dc IP users.txt" >> ~/Commands.txt
     echo "[+] Kerbrute Deployed" >> ~/Report.txt
-        
+    
+    # manspider
+    #pip install pipx --break-system-packages
+    #pipx install git+https://github.com/blacklanternsecurity/MANSPIDER
+    #docker run --rm -v ./manspider:/root/.manspider blacklanternsecurity/manspider --help
+    #echo "manspider <IP> --sharenames Share -d domain.local -u '' -p '' -f '.'" >> ~/Commands.txt
+    #echo "[+] Manspider Deployed" >> ~/Report.txt
+    
     # Evil-WinRM
     sudo apt install -y ruby ruby-dev libkrb5-dev
     sudo gem install evil-winrm
