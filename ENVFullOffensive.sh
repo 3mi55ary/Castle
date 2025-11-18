@@ -188,10 +188,10 @@ if [ ! -d ~/WindowsTools ]; then
     echo "[+] Kerbrute Deployed" >> ~/Report.txt
     
     # manspider
-    #pip install pipx --break-system-packages
-    #pipx install git+https://github.com/blacklanternsecurity/MANSPIDER
-    #echo "MANSPIDER: manspider <IP> --sharenames Share -d domain.local -u '' -p '' -f '.'" >> ~/Commands.txt
-    #echo "[+] Manspider Deployed" >> ~/Report.txt
+    pip install pipx --break-system-packages
+    pipx install git+https://github.com/blacklanternsecurity/MANSPIDER
+    echo "MANSPIDER: manspider <IP> --sharenames Share -d domain.local -u '' -p '' -f '.'" >> ~/Commands.txt
+    echo "[+] Manspider Deployed" >> ~/Report.txt
     
     # Evil-WinRM
     sudo apt install -y ruby ruby-dev libkrb5-dev
