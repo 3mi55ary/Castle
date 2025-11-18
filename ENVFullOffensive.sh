@@ -190,7 +190,7 @@ if [ ! -d ~/WindowsTools ]; then
     # manspider
     #pip install pipx --break-system-packages
     #pipx install git+https://github.com/blacklanternsecurity/MANSPIDER
-    #echo "manspider <IP> --sharenames Share -d domain.local -u '' -p '' -f '.'" >> ~/Commands.txt
+    #echo "MANSPIDER: manspider <IP> --sharenames Share -d domain.local -u '' -p '' -f '.'" >> ~/Commands.txt
     #echo "[+] Manspider Deployed" >> ~/Report.txt
     
     # Evil-WinRM
