@@ -243,19 +243,6 @@ if [ ! -d ~/WindowsTools ]; then
     sudo ln -s ~/WindowsTools/dswalk/ds_walk.py /usr/local/bin/ds_walk.py
     sudo ln -s ~/WindowsTools/dswalk/dsstore.py /usr/local/bin/dsstore.py
     echo "[+] DS_Walk Deployed" >> ~/Report.txt
-
-    # Seatbelt https://github.com/GhostPack/Seatbelt (https://github.com/r3motecontrol/Ghostpack-CompiledBinaries)
-    # winPEAS https://github.com/peass-ng/PEASS-ng/tree/master/winPEAS
-    # PowerUp https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Privesc/PowerUp.ps1 
-    # SharpUp https://github.com/GhostPack/SharpUp (https://github.com/r3motecontrol/Ghostpack-CompiledBinaries)
-    # JAWS https://github.com/411Hall/JAWS
-    # SessionGopher https://github.com/Arvanaghi/SessionGopher
-    # Watson https://github.com/rasta-mouse/Watson
-    # LaZagne https://github.com/AlessandroZ/LaZagne
-    # Windows Exploit Suggester - Next Generation (WES-NG) https://github.com/bitsadmin/wesng
-    # Sysinternals https://learn.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite
-    # PrintSpoofer for SeImpersonate
-    # Backup Operator Copy NTDS.dit https://github.com/giuliano108/SeBackupPrivilege/tree/master
 fi
 
 #===============================================================================
@@ -266,6 +253,11 @@ if [ ! -d ~/WindowsNative ]; then
     mkdir -p ~/WindowsNative/mimikatz
     git clone https://github.com/ParrotSec/mimikatz.git ~/WindowsNative/mimikatz
     echo "[+] Mimikatz Added" >> ~/Report.txt
+
+    # Ghostpack
+    mkdir -p ~/WindowsNative/ghostpack
+    git clone https://github.com/r3motecontrol/Ghostpack-CompiledBinaries.git ~/WindowsNative/ghostpack
+    echo "[+] Ghostpack Binaries Added" >> ~/Report.txt
     
     # netcat
     mkdir -p ~/WindowsNative/netcat
@@ -291,6 +283,19 @@ if [ ! -d ~/WindowsNative ]; then
     echo 'dir /S /B *pass*.txt == *pass*.xml == *pass*.ini == *cred* == *vnc* == *.config*' >> ~/WindowsNative/CredentialHunting.txt
     echo 'where /R C:\ *.config' >> ~/WindowsNative/CredentialHunting.txt
     echo 'foreach($user in ((ls C:\users).fullname)){cat "$user\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt" -ErrorAction SilentlyContinue}' >> ~/WindowsNative/CredentialHunting.txt
+
+    # Seatbelt https://github.com/GhostPack/Seatbelt (https://github.com/r3motecontrol/Ghostpack-CompiledBinaries)
+    # winPEAS https://github.com/peass-ng/PEASS-ng/tree/master/winPEAS
+    # PowerUp https://raw.githubusercontent.com/PowerShellMafia/PowerSploit/master/Privesc/PowerUp.ps1 
+    # SharpUp https://github.com/GhostPack/SharpUp (https://github.com/r3motecontrol/Ghostpack-CompiledBinaries)
+    # JAWS https://github.com/411Hall/JAWS
+    # SessionGopher https://github.com/Arvanaghi/SessionGopher
+    # Watson https://github.com/rasta-mouse/Watson
+    # LaZagne https://github.com/AlessandroZ/LaZagne
+    # Windows Exploit Suggester - Next Generation (WES-NG) https://github.com/bitsadmin/wesng
+    # Sysinternals https://learn.microsoft.com/en-us/sysinternals/downloads/sysinternals-suite
+    # PrintSpoofer for SeImpersonate
+    # Backup Operator Copy NTDS.dit https://github.com/giuliano108/SeBackupPrivilege/tree/master
 fi
 
 #===============================================================================
