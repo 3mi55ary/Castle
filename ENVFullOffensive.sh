@@ -19,6 +19,7 @@ echo "[+] Report Created" > ~/Report.txt
 # Generate Quick Commands Guide
 echo "=== QUICK COMMANDS GUIDE ===" > ~/Commands.txt
 echo "[+] Quick Commands Guide Created" > ~/Report.txt
+echo "ERR_CLOCK_SKEW: sudo systemctl stop systemd-timesyncd && sudo ntpdate -u target.local" >> ~/Commands.txt
 
 # Updates Kali GPG keyring
 sudo wget https://archive.kali.org/archive-keyring.gpg -O /usr/share/keyrings/kali-archive-keyring.gpg
