@@ -9,6 +9,7 @@
 # NOTES         : Must run without sudo (sudo is handled by the script when needed).
 # NOTES         : Tested on Latest Release of Kali Linux.
 # Upcoming Fixes: Convert ~/ to hard paths or perform better logic handling
+# Add           : git clone https://github.com/ShutdownRepo/impacket.git
 #===============================================================================
 #===============================================================================
 # System Basics ================================================================
