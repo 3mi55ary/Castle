@@ -127,7 +127,7 @@ if [ ! -d ~/WindowsTools ]; then
     
     # Bloodhound-CE Ingestor (Python Based) (bloodhound-ce-python -c All -d yourdomain.local -u username -p password -ns dnsserver)
     uv tool install git+https://github.com/dirkjanm/BloodHound.py@bloodhound-ce --force
-    echo "Bloodhound-CE Ingestor: bloodhound-ce-python -c All -d yourdomain.local -u username -p password -ns dnsserver" >> ~/Commands.txt
+    echo "Bloodhound-CE Ingestor: bloodhound-ce-python -c All -d yourdomain.local -u username -p password -ns dnsserver --zip" >> ~/Commands.txt
     echo "[+] Bloodhound-CE Ingestor Deployed" >> ~/Report.txt
     
     # Impacket
