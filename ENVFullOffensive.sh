@@ -210,7 +210,8 @@ if [ ! -d ~/WindowsTools ]; then
     mkdir -p ~/WindowsTools/username-anarchy
     git clone https://github.com/urbanadventurer/username-anarchy.git ~/WindowsTools/username-anarchy
     sudo ln -sf ~/WindowsTools/username-anarchy/username-anarchy /usr/local/bin/username-anarchy
-    echo "USERNAME-ANARCHY: username-anarchy -i names.txt -f flast,lfirst,f.last > usernames.txt" >> ~/Commands.txt
+    echo "USERNAME-ANARCHY: username-anarchy -i names.txt > usernamesfull.txt" >> ~/Commands.txt
+    echo "USERNAME-ANARCHY: username-anarchy -i names.txt -f flast,lfirst,f.last > usernamestailored.txt" >> ~/Commands.txt
     echo "[+] Username-Anarchy Deployed" >> ~/Report.txt
 
     # ldapsearch
