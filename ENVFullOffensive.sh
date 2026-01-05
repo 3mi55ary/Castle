@@ -6,8 +6,9 @@
 # DATE          : 2025-08-28
 # VERSION       : Lost Count
 # USAGE         : ./ENVFullOffensive.sh
-# NOTES         : Must run "git clone" from "~/" without sudo (sudo is handled by the script when needed).
+# NOTES         : Must run without sudo (sudo is handled by the script when needed).
 # NOTES         : Tested on Latest Release of Kali Linux.
+# Upcoming Fixes: Convert ~/ to hard paths or perform better logic handling
 #===============================================================================
 #===============================================================================
 # System Basics ================================================================
@@ -204,6 +205,13 @@ if [ ! -d ~/WindowsTools ]; then
     sudo ln -s ~/WindowsTools/responder/Responder.py /usr/local/bin/responder2
     echo "RESPONDER: sudo responder2 -i eth0" >> ~/Commands.txt
     echo "[+] Responder Deployed" >> ~/Report.txt
+
+    # username-anarchy
+    mkdir -p ~/WindowsTools/username-anarchy
+    git clone https://github.com/urbanadventurer/username-anarchy.git ~/WindowsTools/username-anarchy
+    sudo ln -sf ~/WindowsTools/username-anarchy/username-anarchy /usr/local/bin/username-anarchy
+    echo "USERNAME-ANARCHY: username-anarchy -i names.txt -f flast,lfirst,f.last > usernames.txt" >> ~/Commands.txt
+    echo "[+] Username-Anarchy Deployed" >> ~/Report.txt
 
     # ldapsearch
     sudo apt install -y ldap-utils
