@@ -148,6 +148,11 @@ if [ ! -d ~/WindowsTools ]; then
     echo "BloodyAD: bloodyAD --host <DC-IP> -d 'domain.local' -u 'owneduser' -p 'password' set password 'targetuser' 'newpassword'" >> ~/Commands.txt
     echo "[+] BloodyAD Deployed" >> ~/Report.txt
     
+    # Powerview
+    uv tool install git+https://github.com/aniqfakhrul/powerview.py.git --force
+    echo "powerview: powerview domain.local/user:'password'@domain.local" >> ~/Commands.txt
+    echo "[+] Powerview Deployed" >> ~/Report.txt
+        
     # Certipy-AD
     uv tool install git+https://github.com/ly4k/Certipy.git --force
     echo "[+] Certipy Deployed" >> ~/Report.txt
