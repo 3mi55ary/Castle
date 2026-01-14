@@ -1,0 +1,55 @@
+# Database locations
+database=file:/var/lib/aide/aide.db
+database_out=file:/var/lib/aide/aide.db.new
+
+# Rule sets
+NORMAL = p+i+n+u+g+s+m+c+sha256+sha512
+META   = p+i+n+u+g+s+m
+LOGS   = p+u+g+n
+
+# Virtual filesystems (never monitor)
+!/proc
+!/sys
+!/dev
+!/run
+!/tmp
+!/var/tmp
+!/var/run
+
+# High-churn Alpine paths (exclude to avoid noise)
+!/var/cache/apk
+!/var/cache/misc
+!/var/lib/apk
+!/var/lib/misc
+!/var/lib/dbus
+!/var/lib/udhcp
+!/var/lib/systemd
+!/var/lib/logrotate
+!/var/lib/chrony
+!/var/lib/nfs
+
+# Logs (metadata only)
+#/var/log LOGS
+
+# Core system directories
+/boot   NORMAL
+/bin    NORMAL
+/sbin   NORMAL
+/lib    NORMAL
+/lib64  NORMAL
+/usr    NORMAL
+
+# Configuration directories
+/etc    NORMAL
+
+# Root home (metadata only)
+/root   META
+
+# Local binaries and scripts
+/usr/local/bin  NORMAL
+/usr/local/sbin NORMAL
+
+# Self-monitoring
+/etc/aide.conf NORMAL
+/usr/bin/aide NORMAL
+/usr/local/bin/aide NORMAL
